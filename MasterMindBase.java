@@ -344,8 +344,7 @@ public class MasterMindBase {
     public static void main(String[] args) {
 
 
-    } // fin main
-
+    }
+    // fin main
     //___________________________________________________________________
-
 } // fin MasterMindBase
