@@ -12,6 +12,7 @@ public class MasterMindBase {
       résultat : un tableau de nb entiers égaux à val
      */
     public static int[] initTab(int nb, int val) {
+        int q = 0;
         return null;
     }
 
