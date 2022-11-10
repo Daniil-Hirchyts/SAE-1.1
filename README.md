@@ -7,20 +7,20 @@ I.U.T. Montpellier-Sète – Département informatique – BUT 1re année
 
 ## Sommaire
 
-- [Présentation du jeu de Master Mind et du projet à réaliser](#Présentation-du-jeu-de-Master-Mind-et-du-projet-à-réaliser)
-- [Version de base](#Version-de-base)
-  - [Les paramètres d’une partie](#Les-paramètres-d’une-partie)
-  - [Les deux représentations d’un code](#Les-deux-représentations-d’un-code)
-  - [Précisions sur la fin d’une manche](#Précisions-sur-la-fin-d’une-manche)
-  - [Outils de base](#Outils-de-base)
-  - [Une manche Humain](#Une-manche-Humain)
-  - [Fonctions complémentaires sur les codes pour la manche Ordinateur](#Fonctions-complémentaires-sur-les-codes-pour-la-manche-Ordinateur)
-  - [Une manche Ordinateur](#Une-manche-Ordinateur)
-  - [Le programme principal](#Le-programme-principal)
-- [Extensions](#Extensions)
+- [Présentation du jeu de Master Mind et du projet à réaliser](#1)
+- [Version de base](#2)
+  - [Les paramètres d’une partie](#3)
+  - [Les deux représentations d’un code](#4)
+  - [Précisions sur la fin d’une manche](#5)
+  - [Outils de base](#6)
+  - [Une manche Humain](#7)
+  - [Fonctions complémentaires sur les codes pour la manche Ordinateur](#8)
+  - [Une manche Ordinateur](#9)
+  - [Le programme principal](#10)
+- [Extensions](#11)
 
 
-## Présentation du jeu de Master Mind et du projet à réaliser
+## Présentation du jeu de Master Mind et du projet à réaliser  <p id="1">
 
   <p>Le but de ce projet est de programmer une partie du jeu de <a href="https://fr.wikipedia.org/wiki/Mastermind">MasterMind</a> entre un humain et
 l’ordinateur.</p>
@@ -74,9 +74,9 @@ si vous en éprouvez le besoin, à condition d’en écrire les spécifications 
 code de toutes les fonctions demandées, puisque ce sont elles qui seront testées par les tests
 automatiques.</p>
 
-## Version de base
+## Version de base <p id="2">
 
-### Les paramètres d’une partie
+### Les paramètres d’une partie <p id="3">
 
   <p>Avant de commencer la partie, joueur (humain) saisit le nombre de pions du code secret,
 noté <code>lgCode</code>, le nombre de couleurs possibles, noté nbCouleurs, l’identité de ces couleurs,
@@ -93,7 +93,7 @@ ayant ces données en paramètres.</p>
 <code>lgCode = 4</code> et que les couleurs saisies sont <code>"Rouge", "Bleu", "Jaune", "Vert", "Orange" et
 "Noir"</code> dans cet ordre, de sorte que le tableau <code>tabCouleurs</code> contient <code>(’R’, ’B’, ’J’, ’V’, ’O’, ’N’)</code>.</p>
 
-### Les deux représentations d’un code
+### Les deux représentations d’un code <p id="4">
   <p>Un code est représenté soit par un mot (de type String) de longueur lgCode dont chaque
 caractère est un élément de <code>tabCouleurs</code> (pour la saisie ou l’affichage du code), soit par un
 tableau d’entiers obtenu à partir de ce mot en remplaçant chaque caractère par son indice
@@ -102,7 +102,7 @@ code).</p>
   <p>Pour l’exemple ci-dessus, le code (Bleu, Rouge, Jaune, Rouge) est représenté, à l’écran, par
 le mot "BRJR" et, en machine, par le tableau d’entiers (1, 0, 2, 0).</p>
 
-### Précisions sur la fin d’une manche
+### Précisions sur la fin d’une manche <p id="5">
   <p>Rappelons qu’une manche se termine quand le décodeur propose un code égal au code
 secret ou qu’il a fait <code>nbEssaisMax</code> propositions.</p>
   <p>Dans le premier cas (code trouvé), le nombre de propositions de code faites par le décodeur
@@ -121,7 +121,7 @@ malus = nbMalPlaces + 2 × (lgCode − (nbBienPlaces + nbMalPlaces))
 <p>Ce qui incitera le décodeur à faire une dernière proposition avec un maximum de pions de la
 bonne couleur...</p>
 
-### Outils de base
+### Outils de base <p id="6">
   <p>Vous allez écrire des fonctions utiles pour votre programme de jeu : d’abord des fonctions
 classiques sur les tableaux, puis des fonctions plus spécifiques pour la gestion des codes
 sous forme de mots ou de tableaux d’entiers.</p>
@@ -132,7 +132,7 @@ pas bien placés. Le nombre d’éléments communs aux deux tableaux se calcule 
 le nombre de pions de ce code de la couleur numéro i).</p>
 <p>Ecrire et tester les fonctions de la rubrique Outils de base.</p>
 
-### Une manche Humain
+### Une manche Humain <p id="7">
 <p>On appelle manche Humain une manche au cours de laquelle c’est le joueur humain qui
 "joue", c’est-à-dire qui est le décodeur. L’ordinateur choisit un code secret sous forme d’un tableau d’entiers choisis aléatoirement entre 0 et nbCouleurs − 1. Ensuite, pour chaque code
 proposé par le joueur sous forme de mot, il vérifie que ce code est correctement formé (s’il
@@ -141,7 +141,7 @@ tableau d’entiers et affiche à l’écran les nombres de pions bien et mal pl
 proposé par le joueur.</p>
 <p>Ecrire et tester la fonction mancheHumain.</p>
 
-### Fonctions complémentaires sur les codes pour la manche Ordinateur
+### Fonctions complémentaires sur les codes pour la manche Ordinateur <p id="8">
 <p>Après quelques fonctions utiles pour l’affichage et la saisie, on vous propose d’écrire les fonctions
 gérant la stratégie de l’ordinateur.</p>
 <p>La stratégie de l’ordinateur pour trouver le code secret S est la suivante. Il propose tous les
@@ -181,7 +181,7 @@ f<sub><small>2</small></sub> est aussi modifié dans la fonction f<sub><small>1<
 <p></p>
 
 
-### Une manche Ordinateur
+### Une manche Ordinateur <p id="9">
 <p>Une manche Ordinateur est une manche au cours de laquelle c’est l’ordinateur qui "joue"
 (décode). Le joueur humain choisit un code "dans sa tête", mais ne le saisit pas au clavier.
 L’ordinateur fait une suite de propositions de codes affichées sous forme de mots, et pour
@@ -218,7 +218,7 @@ d’une extension.</p>
 <p></p>
 
 
-### Le programme principal
+### Le programme principal <p id="10">
 <p>Ecrire et tester les fonctions de saisie pour le programme principal, puis la fonction <code>main</code>.</p>
 
-## Extensions
+## Extensions <p id="11">
