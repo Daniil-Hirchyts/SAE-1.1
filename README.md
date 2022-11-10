@@ -5,9 +5,9 @@ I.U.T. Montpellier-Sète – Département informatique – BUT 1re année
 </p>
 
 
-## Table of Contents
+## Sommaire
 
-- [Présentation du jeu](#Présentation-du-jeu-de-Master-Mind-et-du-projet-à-réaliser)
+- [Présentation du jeu de Master Mind et du projet à réaliser](#Présentation-du-jeu-de-Master-Mind-et-du-projet-à-réaliser)
 - [Version de base](#Version-de-base)
   - [Les paramètres d’une partie](#Les-paramètres-d’une-partie)
   - [Les deux représentations d’un code](#Les-deux-représentations-d’un-code)
