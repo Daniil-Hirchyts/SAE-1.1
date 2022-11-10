@@ -7,11 +7,14 @@ public class MasterMindBase {
     //.........................................................................
 
     // fonctions classiques sur les tableaux
-    //______________________________________________
 
+    //______________________________________________
     /**
-     * pré-requis : nb >= 0
-     * résultat : un tableau de nb entiers égaux à val
+     *
+     * @param nb nombre d'éléments du tableau
+     * @param val valeur à affecter à chaque élément
+     * @return tableau de nb cases contenant la valeur val
+     * @Pré-requis: nb >= 0
      */
     public static int[] initTab(int nb, int val) {
         int[] tab = new int[nb];
@@ -20,10 +23,11 @@ public class MasterMindBase {
     }
 
     //______________________________________________
-
     /**
-     * pré-requis : aucun
-     * résultat : une copie de tab
+     *
+     * @param tab tableau d'entiers
+     * @return copie de tab
+     * @Pré-requis: tab != null
      */
     public static int[] copieTab(int[] tab) {
         int[] c = new int[tab.length];
@@ -32,10 +36,11 @@ public class MasterMindBase {
     }
 
     //______________________________________________
-
     /**
-     * pré-requis : aucun
-     * résultat : la liste des éléments de t entre parenthèses et séparés par des virgules
+     *
+     * @param t tableau d'entiers
+     * @return la liste des éléments de t entre parenthèses et séparés par des virgules
+     * @Pré-requis: t != null
      */
     public static String listElem(char[] t) {
         String l = "(";
@@ -45,11 +50,14 @@ public class MasterMindBase {
         }
         return l + ")";
     }
-    //______________________________________________
 
+    //______________________________________________
     /**
-     * pré-requis : aucun
-     * résultat : le plus grand indice d'une case de t contenant c s'il existe, -1 sinon
+     *
+     * @param t tableau de caractères
+     * @param c charactère à compter
+     * @return le plus grand indice d'une case de t contenant c s'il existe, -1 sinon
+     * @Pré-requis: t != null
      */
     public static int plusGrandIndice(char[] t, char c) {
         int i = t.length - 1;
@@ -58,23 +66,23 @@ public class MasterMindBase {
     }
 
     //______________________________________________
-
     /**
-     * pré-requis : aucun
-     * résultat : vrai ssi c'est un élément de t
-     * stratégie : utilise la fonction plusGrandIndice
+     *
+     * @param t tableau de caractères
+     * @param c : caractère
+     * @return vrai ssi c est un élément de t
+     * @Pré-requis: t != null
      */
     public static boolean estPresent(char[] t, char c) {
         return plusGrandIndice(t, c) != -1;
     }
 
     //______________________________________________
-
     /**
-     * pré-requis : aucun
-     * action : affiche un doublon et 2 de ses indices dans t s'il en existe
-     * résultat : vrai ssi les éléments de t sont différents
-     * stratégie : utilise la fonction plusGrandIndice
+     *
+     * @param t tableau de caractères
+     * @return vrai ssi les éléments de t sont différents
+     * @Pré-requis: t != null
      */
     public static boolean elemDiff(char[] t) {
         for (int i = 0; i < t.length; i++) {
@@ -86,16 +94,17 @@ public class MasterMindBase {
         return true;
     }
 
-    //______________________________________________
-
     // Dans toutes les fonctions suivantes, on a comme pré-requis implicites sur les paramètres lgCode, nbCouleurs et tabCouleurs :
     // lgCode > 0, nbCouleurs > 0, tabCouleurs.length > 0 et les éléments de tabCouleurs sont différents
-
     // fonctions sur les codes pour la manche Humain
 
+    //______________________________________________
     /**
-     * pré-requis : t1.length = t2.length
-     * résultat : vrai ssi t1 et t2 contiennent la même suite d'entiers
+     *
+     * @param t1 tableau d'entiers
+     * @param t2 tableau d'entiers
+     * @return vrai ssi t1 et t2 contiennent la même suite d'entiers
+     * @Pré-requis: t1.length == t2.length
      */
     public static boolean sontEgaux(int[] t1, int[] t2) {
         for (int i = 0; i < t1.length; i++) if (t1[i] != t2[i]) return false;
@@ -103,10 +112,12 @@ public class MasterMindBase {
     }
 
     //____________________________________________________________
-
     /**
-     * pré-requis : aucun
-     * résultat : un tableau de lgCode entiers choisis aléatoirement entre 0 et nbCouleurs-1
+     *
+     * @param lgCode : longueur du code
+     * @param nbCouleurs : nombre de couleurs
+     * @return un tableau de lgCode entiers choisis aléatoirement entre 0 et nbCouleurs-1
+     * @Pré-requis: lgCode > 0, nbCouleurs > 0
      */
     public static int[] codeAleat(int lgCode, int nbCouleurs) {
         int[] t = new int[lgCode];
@@ -115,11 +126,13 @@ public class MasterMindBase {
     }
 
     //____________________________________________________________
-
     /**
-     * pré-requis : aucun
-     * action : si codMot n'est pas correct, affiche pourquoi
-     * résultat : vrai ssi codMot est correct, c'est-à-dire de longueur lgCode et ne contenant que des éléments de tabCouleurs
+     *
+     * @param codMot code à deviner
+     * @param lgCode longueur du code
+     * @param tabCouleurs tableau de caractères contenant les couleurs
+     * @return vrai ssi codMot est correct, c'est-à-dire de longueur lgCode et ne contenant que des éléments de tabCouleurs
+     * @Pré-requis: lgCode > 0, tabCouleurs.length > 0
      */
     public static boolean codeCorrect(String codMot, int lgCode, char[] tabCouleurs) {
         if (codMot.length() != lgCode) {
@@ -136,10 +149,12 @@ public class MasterMindBase {
     }
 
     //____________________________________________________________
-
     /**
-     * pré-requis : les caractères de codMot sont des éléments de tabCouleurs
-     * résultat : le code codMot sous forme de tableau d'entiers en remplaçant chaque couleur par son indice dans tabCouleurs
+     *
+     * @param codMot code à deviner
+     * @param tabCouleurs tableau de caractères contenant les couleurs
+     * @return le code codMot sous forme de tableau d'entiers en remplaçant chaque couleur par son indice dans tabCouleurs
+     * @Pré-requis: les caractères de codMot sont des éléments de tabCouleurs
      */
     public static int[] motVersEntiers(String codMot, char[] tabCouleurs) {
         int[] t = new int[codMot.length()];
@@ -149,12 +164,13 @@ public class MasterMindBase {
     }
 
     //____________________________________________________________
-
     /**
-     * pré-requis : aucun
-     * action : demande au joueur humain de saisir la (nbCoups + 1)ème proposition de code sous forme de mot, avec re-saisie éventuelle jusqu'à ce
-     * qu'elle soit correcte (le paramètre nbCoups ne sert que pour l'affichage)
-     * résultat : le code saisi sous forme de tableau d'entiers
+     *
+     * @param lgCode longueur du code
+     * @param tabCouleurs tableau de caractères contenant les couleurs
+     * @param nbCoups nombre de coups joués
+     * @return le code saisi sous forme de tableau d'entiers
+     * @Pré-requis: lgCode > 0, nbCouleurs > 0, tabCouleurs.length > 0
      */
     public static int[] propositionCodeHumain(int nbCoups, int lgCode, char[] tabCouleurs) {
         Scanner scanner = new Scanner(System.in);
@@ -167,11 +183,12 @@ public class MasterMindBase {
     }
 
     //____________________________________________________________
-
     /**
-     * pré-requis : cod1.length = cod2.length
-     * résultat : le nombre d'éléments communs de cod1 et cod2 se trouvant au même indice
-     * Par exemple, si cod1 = (1,0,2,0) et cod2 = (0,1,0,0) la fonction retourne 1 (le "0" à l'indice 3)
+     *
+     * @param cod1 code à deviner
+     * @param cod2 code proposé
+     * @return le nombre d'éléments communs de cod1 et cod2 se trouvant au même indice
+     * @Pré-requis: cod1.length = cod2.length
      */
     public static int nbBienPlaces(int[] cod1, int[] cod2) {
         int nb = 0;
@@ -181,9 +198,11 @@ public class MasterMindBase {
 
     //____________________________________________________________
     /**
-     * pré-requis : les éléments de cod sont des entiers de 0 à nbCouleurs-1
-     * résultat : un tableau de longueur nbCouleurs contenant à chaque indice i le nombre d'occurrences de i dans cod
-     * Par exemple, si cod = (1,0,2,0) et nbCouleurs = 6 la fonction retourne (2,1,1,0,0,0)
+     *
+     * @param cod code à deviner
+     * @param nbCouleurs nombre de couleurs
+     * @return un tableau de longueur nbCouleurs contenant à chaque indice i le nombre d'occurrences de i dans cod
+     * @Pré-requis: les éléments de cod sont des entiers de 0 à nbCouleurs-1
      */
     public static int[] tabFrequence(int[] cod, int nbCouleurs) {
         int[] t = new int[nbCouleurs];
@@ -193,9 +212,12 @@ public class MasterMindBase {
 
     //____________________________________________________________
     /**
-     * pré-requis : les éléments de cod1 et cod2 sont des entiers de 0 à nbCouleurs-1
-     * résultat : le nombre d'éléments communs de cod1 et cod2, indépendamment de leur position
-     * Par exemple, si cod1 = (1,0,2,0) et cod2 = (0,1,0,0) la fonction retourne 3 (2 "0" et 1 "1")
+     *
+     * @param cod1 code à deviner
+     * @param cod2 code proposé
+     * @param nbCouleurs nombre de couleurs
+     * @return le nombre d'éléments communs de cod1 et cod2, indépendamment de leur position
+     * @Pré-requis: les éléments de cod1 et cod2 sont des entiers de 0 à nbCouleurs-1
      */
     public static int nbCommuns(int[] cod1, int[] cod2, int nbCouleurs) {
         int[] t1 = tabFrequence(cod1, nbCouleurs);
@@ -205,17 +227,19 @@ public class MasterMindBase {
         return nb;
     }
 
-    //____________________________________________________________
-
     //.........................................................................
     // MANCHEHUMAIN
     //.........................................................................
+
+    //____________________________________________________________
     /**
-     * pré-requis : cod1.length = cod2.length et les éléments de cod1 et cod2 sont des entiers de 0 à nbCouleurs-1
-     * résultat : un tableau de 2 entiers contenant à l'indice 0 (resp. 1) le nombre d'éléments communs de cod1 et cod2
+     *
+     * @param cod1 code à deviner
+     * @param cod2 code proposé
+     * @param nbCouleurs nombre de couleurs
+     * @return un tableau de 2 entiers contenant à l'indice 0 (resp. 1) le nombre d'éléments communs de cod1 et cod2
      * se trouvant  (resp. ne se trouvant pas) au même indice
-     * Par exemple, si cod1 = (1,0,2,0) et cod2 = (0,1,0,0) la fonction retourne (1,2) : 1 bien placé (le "0" à l'indice 3)
-     * et 2 mal placés (1 "0" et 1 "1")
+     * @Pré-requis: cod1.length = cod2.length et les éléments de cod1 et cod2 sont des entiers de 0 à nbCouleurs-1
      */
     public static int[] nbBienMalPlaces(int[] cod1, int[] cod2, int nbCouleurs) {
         int[] t = new int[2];
@@ -223,14 +247,16 @@ public class MasterMindBase {
         t[1] = nbCommuns(cod1, cod2, nbCouleurs) - t[0];
         return t;
     }
+
+    //____________________________________________________________
     /**
-     * pré-requis : numMache >= 1
-     * action : effectue la (numManche)ème manche où l'ordinateur est le codeur et l'humain le décodeur
-     * (le paramètre numManche ne sert que pour l'affichage)
-     * résultat :
-     * - un nombre supérieur à nbEssaisMax, calculé à partir du dernier essai du joueur humain (cf. sujet),
-     * s'il n'a toujours pas trouvé au bout du nombre maximum d'essais
-     * - sinon le nombre de codes proposés par le joueur humain
+     *
+     * @param numManche numéro de la manche
+     * @param nbEssaisMax nombre maximum d'essais
+     * @param lgCode longueur du code
+     * @param tabCouleurs tableau de caractères contenant les couleurs
+     * @return le nombre de codes proposés par le joueur humain
+     * @Pré-requis: numManche >= 1, nbEssaisMax > 0, lgCode > 0, nbCouleurs > 0, tabCouleurs.length > 0
      */
     public static int mancheHumain(int lgCode, char[] tabCouleurs, int numManche, int nbEssaisMax) {
         int[] cod = codeAleat(lgCode, tabCouleurs.length);
@@ -247,14 +273,17 @@ public class MasterMindBase {
         else return nbEssaisMax + nbEssais;
     }
 
-    //____________________________________________________________
-
     //...................................................................
     // FONCTIONS COMPLÉMENTAIRES SUR LES CODES POUR LA MANCHE ORDINATEUR
     //...................................................................
+
+    //____________________________________________________________
     /**
-     * pré-requis : les éléments de cod sont des entiers de 0 à tabCouleurs.length-1
-     * résultat : le code cod sous forme de mot d'après le tableau tabCouleurs
+     *
+     * @param cod code à transformer
+     * @param tabCouleurs tableau de caractères contenant les couleurs
+     * @return le code cod sous forme de mot d'après le tableau tabCouleurs
+     * @Pré-requis: cod.length > 0, les éléments de cod sont des entiers de 0 à tabCouleurs.length-1, tabCouleurs.length > 0
      */
     public static String entiersVersMot(int[] cod, char[] tabCouleurs) {
         String s = "";
@@ -264,10 +293,11 @@ public class MasterMindBase {
 
     //___________________________________________________________________
     /**
-     * pré-requis : rep.length = 2
-     * action : si rep n'est pas  correcte, affiche pourquoi, sachant que rep[0] et rep[1] sont
-     * les nombres de bien et mal placés resp.
-     * résultat : vrai ssi rep est correct, c'est-à-dire rep[0] et rep[1] sont >= 0 et leur somme est <= lgCode
+     *
+     * @param rep tableau de 2 entiers
+     * @param lgCode longueur du code
+     * @return vrai ssi rep est correct, c'est-à-dire rep[0] et rep[1] sont >= 0 et leur somme est <= lgCode
+     * @Pré-requis: rep.length = 2
      */
     public static boolean repCorrecte(int[] rep, int lgCode) {
         if (rep[0] < 0 || rep[1] < 0 || rep[0] + rep[1] > lgCode) {
