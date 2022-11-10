@@ -8,15 +8,15 @@ I.U.T. Montpellier-Sète – Département informatique – BUT 1re année
 ## Table of Contents
 
 - [Présentation du jeu](#Présentation-du-jeu-de-Master-Mind-et-du-projet-à-réaliser)
-- [Version de base](#features)
-  - [Les paramètres d’une partie](#requirements)
-  - [Les deux représentations d’un code](#)
-  - [Précisions sur la fin d’une manche](#)
-  - [Outils de base](#)
-  - [Une manche Humain](#)
-  - [Fonctions complémentaires sur les codes pour la manche Ordinateur](#)
-  - [Une manche Ordinateur](#)
-  - [Le programme principal](#)
+- [Version de base](#Version de base)
+  - [Les paramètres d’une partie](#Les paramètres d’une partie)
+  - [Les deux représentations d’un code](#Les deux représentations d’un code)
+  - [Précisions sur la fin d’une manche](#Précisions sur la fin d’une manche)
+  - [Outils de base](#Outils de base)
+  - [Une manche Humain](#Une manche Humain)
+  - [Fonctions complémentaires sur les codes pour la manche Ordinateur](#Fonctions complémentaires sur les codes pour la manche Ordinateur)
+  - [Une manche Ordinateur](#Une manche Ordinateur)
+  - [Le programme principal](#Le programme principal)
 - [Extensions](#Extensions)
 
 
