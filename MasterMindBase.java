@@ -187,7 +187,7 @@ public class MasterMindBase {
      */
     public static int[] tabFrequence(int[] cod, int nbCouleurs) {
         int[] t = new int[nbCouleurs];
-        for (int j : cod) t[j]++;
+        for (int j : cod) t[cod[j]]++;
         return t;
     }
 
