@@ -5,7 +5,9 @@
       <paths name="IUT">
         <serverdata>
           <mappings>
-            <mapping deploy="/basic" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/basic" local="$PROJECT_DIR$/basic/src" web="/" />
+            <mapping deploy="/extended" local="$PROJECT_DIR$/extended/src" web="/" />
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
