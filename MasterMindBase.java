@@ -14,8 +14,12 @@ public class MasterMindBase {
      * @return scanne un entier
      */
     public static int lireInt() {
-        Scanner sc = new Scanner(System.in);
-        return sc.nextInt();
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextInt();
+    }
+    public static String lireString() {
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine();
     }
 
     //______________________________________________
@@ -184,7 +188,7 @@ public class MasterMindBase {
      */
     public static int[] propositionCodeHumain(int nbCoups, int lgCode, char[] tabCouleurs) {
         Scanner scanner = new Scanner(System.in);
-        String codMot = "";
+        String codMot = "";// code saisi par l'utilisateur
         do {
             System.out.println("Proposition N°" + (nbCoups + 1) + " : ");
             codMot = scanner.nextLine();
@@ -269,18 +273,18 @@ public class MasterMindBase {
      * @Pré-requis: numManche >= 1, nbEssaisMax > 0, lgCode > 0, nbCouleurs > 0, tabCouleurs.length > 0
      */
     public static int mancheHumain(int lgCode, char[] tabCouleurs, int numManche, int nbEssaisMax) {
-        int[] cod = codeAleat(lgCode, tabCouleurs.length);
-        int nbEssais = 0;
-        int[] prop;
-        int[] res;
-        do {
-            prop = propositionCodeHumain(nbEssais, lgCode, tabCouleurs);
-            res = nbBienMalPlaces(cod, prop, tabCouleurs.length);
-            System.out.println("Résultat : " + res[0] + " bien placé(s) et " + res[1] + " mal placé(s)");
-            nbEssais++;
-        } while (res[0] != lgCode && nbEssais < nbEssaisMax);
-        if (res[0] == lgCode) return nbEssais;
-        else return nbEssaisMax + nbEssais;
+        int nbCoups = 0;
+        int[] cod1 = codeAleat(lgCode, tabCouleurs.length);
+        int[] cod2 = propositionCodeHumain(nbCoups, lgCode, tabCouleurs);
+        while (nbCoups < nbEssaisMax && !Arrays.equals(cod1, cod2)) {
+            int[] t = nbBienMalPlaces(cod1, cod2, tabCouleurs.length);
+            System.out.println("Bien placés : " + t[0] + " Mal placés : " + t[1]);
+            nbCoups++;
+            cod2 = propositionCodeHumain(nbCoups, lgCode, tabCouleurs);
+        }
+        if (nbCoups == nbEssaisMax) System.out.println("Perdu ! Le code était : " + entiersVersMot(cod1, tabCouleurs));
+        else System.out.println("Gagné en " + (nbCoups + 1) + " coups !");
+        return nbCoups + 1;
     }
 
     //...................................................................
@@ -328,9 +332,9 @@ public class MasterMindBase {
         int[] rep = new int[2];
         do {
             System.out.print("Nombre de codes bien placés : ");
-            rep[0] = lireInt();
+            rep[0] = lireInt(); // nombre de codes bien placés
             System.out.print("Nombre de codes mal placés : ");
-            rep[1] = lireInt();
+            rep[1] = lireInt(); // nombre de codes mal placés
         } while (!repCorrecte(rep, lgCode));
         return rep;
     }
@@ -397,7 +401,6 @@ public class MasterMindBase {
         return true;
     }
 
-    // manche Ordinateur
     //___________________________________________________________________
     /**
      * @param lgCode longueur du code
@@ -413,16 +416,18 @@ public class MasterMindBase {
      * sinon le nombre de codes proposés par l'ordinateur
      */
     public static int mancheOrdinateur(int lgCode, char[] tabCouleurs, int numManche, int nbEssaisMax) {
+        int nbCouleurs = tabCouleurs.length;
         int[][] cod = new int[nbEssaisMax][lgCode];
         int[][] rep = new int[nbEssaisMax][2];
         int nbCoups = 0;
-        int[] res;
-        System.out.println("Manche " + numManche + " : l'ordinateur doit trouver le code secret");
-        System.out.println("Le code secret est composé de " + lgCode + " couleurs parmi : " + tabCouleurs);
+        int nbEssais = 0;
+        System.out.println("Manche " + (numManche / 2) + " : l'ordinateur doit trouver le code secret");
+        System.out.println("Le code secret est composé de " + lgCode + " couleurs parmi : " + Arrays.toString(tabCouleurs));
         System.out.println("L'ordinateur a " + nbEssaisMax + " essais pour trouver le code secret");
-        System.out.println("L'ordinateur propose un code");
+        System.out.println("L'ordinateur commence");
         for (int i = 0; i < cod[0].length; i++) cod[nbCoups][i] = 0;
         do {
+            System.out.println("Essai n°" + (nbCoups + 1) + " : ");
             afficheCode(cod[nbCoups], tabCouleurs);
             rep[nbCoups] = reponseHumain(lgCode);
             if (rep[nbCoups][0] == lgCode) {
@@ -430,16 +435,10 @@ public class MasterMindBase {
                 return nbCoups + 1;
             }
             nbCoups++;
-            if (nbCoups < nbEssaisMax) {
-                System.out.println("L'ordinateur propose un code");
-                if (!passePropSuivante(cod, rep, nbCoups, tabCouleurs.length)) {
-                    System.out.println("L'ordinateur n'a pas trouvé le code secret");
-                    return nbEssaisMax + 1;
-                }
-            }
-        } while (nbCoups < nbEssaisMax);
-        System.out.println("L'ordinateur n'a pas trouvé le code secret");
-        return nbEssaisMax + 1;
+            nbEssais = nbCoups * (nbCouleurs - 1) + 1;
+        } while (nbCoups < nbEssaisMax && passePropSuivante(cod, rep, nbCoups, nbCouleurs));
+        System.out.println("L'ordinateur n'a pas trouvé le code secret en " + nbEssaisMax + " essais");
+        return nbEssais;
     }
 
     //___________________________________________________________________
@@ -448,89 +447,6 @@ public class MasterMindBase {
             System.out.print(tabCouleurs[j]);
         }
         System.out.println();
-    }
-
-
-    //FIXME: manche, codeSecret, evaluerProposition, saisirProposition, saisirCouleur
-    private static int manche(int i, int lgCode, char[] tabCouleurs, int nbEssaisMax) {
-        System.out.println("═════════════════════════════════════════════════════════════════════════════════════════");
-        System.out.println("Manche " + i);
-        System.out.println("═════════════════════════════════════════════════════════════════════════════════════════");
-        int[] codeSecret = codeAleat(lgCode, tabCouleurs.length);
-        int nbEssais = 0;
-        int[] proposition = new int[lgCode];
-        int[] resultat = new int[2];
-        while (nbEssais < nbEssaisMax && resultat[0] != lgCode) {
-            System.out.println("Essai " + (nbEssais + 1));
-            proposition = saisirProposition(lgCode, tabCouleurs);
-            resultat = evaluerProposition(proposition, codeSecret);
-            System.out.println("Résultat : " + resultat[0] + " couleurs bien placées, " + resultat[1] + " couleurs mal placées");
-            nbEssais++;
-        }
-        if (resultat[0] == lgCode) {
-            System.out.println("Bravo, vous avez trouvé le code secret !");
-            return 1;
-        } else {
-            System.out.println("Vous avez perdu, le code secret était : " + Arrays.toString(codeSecret(codeSecret, tabCouleurs)));
-            return 0;
-        }
-    }
-
-    //Déchiffrement de int[] codeSecret en char[]
-    private static char[] codeSecret(int[] codeSecret, char[] tabCouleurs) {
-        char[] codeSecretChar = new char[codeSecret.length];
-        for (int i = 0; i < codeSecret.length; i++) {
-            codeSecretChar[i] = tabCouleurs[codeSecret[i]];
-        }
-        return codeSecretChar;
-    }
-
-    private static int[] evaluerProposition(int[] proposition, int[] codeSecret) {
-        int[] resultat = new int[2];
-        int[] codeSecretCopie = codeSecret.clone();
-        for (int i = 0; i < proposition.length; i++) {
-            if (proposition[i] == codeSecretCopie[i]) {
-                resultat[0]++;
-                codeSecretCopie[i] = -1;
-                proposition[i] = -2;
-            }
-        }
-        for (int i = 0; i < proposition.length; i++) {
-            for (int j = 0; j < codeSecretCopie.length; j++) {
-                if (proposition[i] == codeSecretCopie[j]) {
-                    resultat[1]++;
-                    codeSecretCopie[j] = -1;
-                    proposition[i] = -2;
-                }
-            }
-        }
-        return resultat;
-    }
-
-    private static int[] saisirProposition(int lgCode, char[] tabCouleurs) {
-        int[] proposition = new int[lgCode];
-        for (int i = 0; i < lgCode; i++) {
-            System.out.println("Saisissez la couleur " + (i + 1) + " de votre proposition");
-            proposition[i] = saisirCouleur(tabCouleurs);
-        }
-        return proposition;
-    }
-
-    private static int saisirCouleur(char[] tabCouleurs) {
-        int couleur = -1;
-        while (couleur == -1) {
-            Scanner sc = new Scanner(System.in);
-            String saisie = sc.nextLine();
-            for (int i = 0; i < tabCouleurs.length; i++) {
-                if (saisie.charAt(0) == tabCouleurs[i]) {
-                    couleur = i;
-                }
-            }
-            if (couleur == -1) {
-                System.out.println("Couleur invalide, veuillez saisir une couleur parmi : " + Arrays.toString(tabCouleurs));
-            }
-        }
-        return couleur;
     }
 
     //.........................................................................
@@ -578,7 +494,7 @@ public class MasterMindBase {
         Scanner sc = new Scanner(System.in);
         int n;
         do {
-            System.out.print("Saisir le nombre de couleurs (strictement positif) : ");
+            System.out.print("Saisir le nombre de couleurs strictement positif entre 4 et 6 : ");
             n = sc.nextInt();
         } while (n <= 0);
         char[] tabCouleurs = new char[n];
@@ -614,7 +530,13 @@ public class MasterMindBase {
 
         //Titre du programme
         System.out.println("═════════════════════════════════════════════════════════════════════════════════════════ \n");
-        System.out.println("███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗     ███╗   ███╗██╗███╗   ██╗██████╗ \n" + "████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗    ████╗ ████║██║████╗  ██║██╔══██╗\n" + "██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝    ██╔████╔██║██║██╔██╗ ██║██║  ██║\n" + "██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗    ██║╚██╔╝██║██║██║╚██╗██║██║  ██║\n" + "██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║    ██║ ╚═╝ ██║██║██║ ╚████║██████╔╝\n" + "╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝    ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═════╝ \n" + "                                                                                        ");
+        System.out.println(
+                        "███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗     ███╗   ███╗██╗███╗   ██╗██████╗ \n" +
+                        "████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗    ████╗ ████║██║████╗  ██║██╔══██╗\n" +
+                        "██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝    ██╔████╔██║██║██╔██╗ ██║██║  ██║\n" +
+                        "██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗    ██║╚██╔╝██║██║██║╚██╗██║██║  ██║\n" +
+                        "██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║    ██║ ╚═╝ ██║██║██║ ╚████║██████╔╝\n" +
+                        "╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝    ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═════╝ \n\n");
         System.out.println("═════════════════════════════════════════════════════════════════════════════════════════");
         System.out.println("                                        Réalisé par : Daniil HIRCHYTS & Youssera OULMEKKI");
         System.out.println("                                 IUT Montpellier-Sète, Département Informatique 2022-2023");
@@ -645,21 +567,23 @@ public class MasterMindBase {
         System.out.println("═════════════════════════════════════════════════════════════════════════════════════════");
 
         //Début de la partie
-        System.out.println("La partie commence !");
+        System.out.println("La partie commence 🚩!");
         int[] score = new int[2];
         for (int i = 0; i < nbManches; i++) {
+            System.out.println("═════════════════════════════════════════════════════════════════════════════════════════");
+            System.out.println("Manche " + (i + 1) + " :");
             if (i % 2 == 0) {
-                score[0] += manche(i + 1, lgCode, tabCouleurs, nbEssaisMax);
+                score[0] += mancheOrdinateur(lgCode, tabCouleurs, i + 1, nbEssaisMax);
             } else {
-                score[1] += manche(i + 1, lgCode, tabCouleurs, nbEssaisMax);
+                score[1] += mancheHumain(lgCode, tabCouleurs, i + 1, nbEssaisMax);
             }
         }
         if (score[0] < score[1]) {
-            System.out.println("L'ordinateur a gagné la partie");
+            System.out.println("L'ordinateur a gagné la partie avec un score de " + score[0] + " points ⭐️!");
         } else if (score[0] > score[1]) {
-            System.out.println("Le joueur humain a gagné la partie");
+            System.out.println("Le joueur humain a gagné la partie avec un score de " + score[1] + " points ⭐️!");
         } else {
-            System.out.println("La partie est nulle");
+            System.out.println("La partie est nulle 🚫");
         }
     }
 } // fin de la classe Mastermind
