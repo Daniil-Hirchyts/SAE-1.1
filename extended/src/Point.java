@@ -3,8 +3,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/* Auteur principal : Loic Wisniewski ; date de creation : decembre 2014 ; mise a jour : 1 decembre 2014  */
-
 public class Point {
 
     private Color c;
