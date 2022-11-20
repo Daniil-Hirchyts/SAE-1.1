@@ -340,65 +340,74 @@ public class MasterMindExtended {
     }
 
     //___________________________________________________________________
-    /**
-     *
-     * @param cod1 code à transformer
-     * @param nbCouleurs nombre de couleurs
-     * @return vrai ssi l'action a pu être effectuée
-     * @Pré-requis: cod1.length > 0, les éléments de cod1 sont des entiers de 0 à nbCouleurs-1
+    /**CHANGE : action si le code suivant n'existe pas
+     *************************************************
+     pré-requis : les éléments de cod1 sont des entiers de 0 à nbCouleurs-1
+     action/résultat : met dans cod1 le code qui le suit selon l'ordre lexicographique (dans l'ensemble
+     des codes à valeurs  de 0 à nbCouleurs-1) et retourne vrai si ce code existe,
+     sinon met dans cod1 le code ne contenant que des "0" et retourne faux
      */
     public static boolean passeCodeSuivantLexico(int[] cod1, int nbCouleurs) {
-        int i = cod1.length - 1;
-        while (i >= 0 && cod1[i] == nbCouleurs - 1) i--;
-        if (i < 0) return false;
-        cod1[i]++;
-        for (int j = i + 1; j < cod1.length; j++) cod1[j] = 0;
-        return true;
-    }
-
-    //___________________________________________________________________
-    /**
-     *
-     * @param cod tableau d'entiers de deux dimensions contenant les codes à tester et les résultats associés (cod[i][0] = code, cod[i][1] = nb bien placés, cod[i][2] = nb mal placés)
-     * @param rep le tableau de 2 entiers contenant le nombre de codes bien et mal placés de cod
-     * @param nbCoups nombre de coups joués
-     * @return vrai ssi cod[nbCoups] est compatible avec les nbCoups premières lignes de cod et de rep,
-     * c'est-à-dire que si cod[nbCoups] était le code secret, les réponses aux nbCoups premières
-     * propositions de cod seraient les nbCoups premières réponses de rep
-     * @Pré-requis: cod est une matrice, rep est une matrice à 2 colonnes, 0 <= nbCoups < cod.length
-     * et  nbCoups < rep.length
-     */
-    public static boolean estCompat(int[][] cod, int[][] rep, int nbCoups, int nbCouleurs) {
-        int[] res;
-        for (int i = 0; i < nbCoups; i++) {
-            res = nbBienMalPlaces(cod[i], cod[nbCoups], nbCouleurs);
-            if (res[0] != rep[i][0] || res[1] != rep[i][1]) return false;
+        int n = cod1.length;
+        int i = n-1;
+        while (i >= 0 && cod1[i] == nbCouleurs-1){
+            cod1[i] = 0;
+            i--;
         }
-        return true;
-    }
-
-    //___________________________________________________________________
-    /**
-     *
-     * @param cod tableau d'entiers de deux dimensions contenant les codes à tester et les résultats associés (cod[i][0] = code, cod[i][1] = nb bien placés, cod[i][2] = nb mal placés)
-     * @param rep le tableau de 2 entiers contenant le nombre de codes bien et mal placés de cod
-     * @param nbCoups nombre de coups joués
-     * @param nbCouleurs nombre de couleurs
-     * @return vrai ssi l'action a pu être effectuée
-     * @Pré-requis: cod est une matrice, rep est une matrice à 2 colonnes, 0 < nbCoups < cod.length
-     * et nbCoups < rep.length
-     */
-    public static boolean passePropSuivante(int[][] cod, int[][] rep, int nbCoups, int nbCouleurs) {
-        if (nbCoups == 0) {
-            for (int i = 0; i < cod[0].length; i++) cod[nbCoups][i] = 0;
+        if (i >= 0){
+            cod1[i]++;
             return true;
         }
-        if (!passeCodeSuivantLexico(cod[nbCoups - 1], nbCouleurs)) return false;
-        while (!estCompat(cod, rep, nbCoups, nbCouleurs)) {
-            if (!passeCodeSuivantLexico(cod[nbCoups - 1], nbCouleurs)) return false;
+        else{
+            for (int j = 0; j < n; j++){
+                cod1[j] = 0;
+            }
+            return false;
         }
-        for (int i = 0; i < cod[0].length; i++) cod[nbCoups][i] = cod[nbCoups - 1][i];
-        return true;
+    }
+
+    //___________________________________________________________________
+    /**CHANGE : ajout du paramètre cod1 et modification des spécifications
+     *********************************************************************
+     pré-requis : cod est une matrice à cod1.length colonnes, rep est une matrice à 2 colonnes, 0 <= nbCoups < cod.length,
+     nbCoups < rep.length et les éléments de cod1 et de cod sont des entiers de 0 à nbCouleurs-1
+     résultat : vrai ssi cod1 est compatible avec les nbCoups premières lignes de cod et de rep,
+     c'est-à-dire que si cod1 était le code secret, les réponses aux nbCoups premières
+     propositions de cod seraient les nbCoups premières réponses de rep resp.
+     */
+    public static boolean estCompat(int [] cod1, int [][] cod, int[][] rep, int nbCoups, int nbCouleurs) {
+        boolean bool = true;
+        int[] nbBienMal = new int[2];
+        for (int i = 0; i < nbCoups; i++) {
+            nbBienMal = nbBienMalPlaces(cod[i], cod1, nbCouleurs);
+            if (nbBienMal[0] != rep[i][0] || nbBienMal[1] != rep[i][1]) {
+                bool = false;
+            }
+        }
+        return bool;
+    }
+
+    //___________________________________________________________________
+    /**CHANGE : renommage de passePropSuivante en passeCodeSuivantLexicoCompat,
+     ajout du paramètre cod1 et modification des spécifications
+     **************************************************************************
+     pré-requis : cod est une matrice à cod1.length colonnes, rep est une matrice à 2 colonnes, 0 <= nbCoups < cod.length,
+     nbCoups < rep.length et les éléments de cod1 et de cod sont des entiers de 0 à nbCouleurs-1
+     action/résultat : met dans cod1 le plus petit code (selon l'ordre lexicographique (dans l'ensemble
+     des codes à valeurs  de 0 à nbCouleurs-1) qui est à la fois plus grand que
+     cod1 selon cet ordre et compatible avec les nbCoups premières lignes de cod et rep si ce code existe,
+     sinon met dans cod1 le code ne contenant que des "0" et retourne faux
+     */
+    public static boolean passeCodeSuivantLexicoCompat(int [] cod1, int [][] cod,int [][] rep, int nbCoups, int  nbCouleurs){
+        boolean bool = false;
+        while (!bool) {
+            bool = passeCodeSuivantLexico(cod1, nbCouleurs);
+            if (bool) {
+                bool = estCompat(cod1, cod, rep, nbCoups, nbCouleurs);
+            }
+        }
+        return bool;
+
     }
 
     //___________________________________________________________________
@@ -420,24 +429,29 @@ public class MasterMindExtended {
         int[][] cod = new int[nbEssaisMax][lgCode];
         int[][] rep = new int[nbEssaisMax][2];
         int nbCoups = 0;
+        int[] cod1 = new int[lgCode];
+        int[] reponse = new int[2];
         int nbEssais = 0;
-        System.out.println("Manche " + (numManche / 2) + " : l'ordinateur doit trouver le code secret");
-        System.out.println("Le code secret est composé de " + lgCode + " couleurs parmi : " + Arrays.toString(tabCouleurs));
-        System.out.println("L'ordinateur a " + nbEssaisMax + " essais pour trouver le code secret");
-        System.out.println("L'ordinateur commence");
-        for (int i = 0; i < cod[0].length; i++) cod[nbCoups][i] = 0;
-        do {
-            System.out.println("Essai n°" + (nbCoups + 1) + " : ");
-            afficheCode(cod[nbCoups], tabCouleurs);
-            rep[nbCoups] = reponseHumain(lgCode);
-            if (rep[nbCoups][0] == lgCode) {
-                System.out.println("L'ordinateur a trouvé le code secret en " + (nbCoups + 1) + " essais");
-                return nbCoups + 1;
+        boolean bool = true;
+        while (nbCoups < nbEssaisMax && bool) {
+            System.out.println("Essai n°" + (nbCoups + 1) + " de la manche n°" + numManche);
+            System.out.println(entiersVersMot(cod1, tabCouleurs));
+            reponse = reponseHumain(lgCode);
+            if (reponse[0] == lgCode) {
+                bool = false;
             }
-            nbCoups++;
-            nbEssais = nbCoups * (nbCouleurs - 1) + 1;
-        } while (nbCoups < nbEssaisMax && passePropSuivante(cod, rep, nbCoups, nbCouleurs));
-        System.out.println("L'ordinateur n'a pas trouvé le code secret en " + nbEssaisMax + " essais");
+            if (bool) {
+                cod[nbCoups] = copieTab(cod1);
+                rep[nbCoups] = reponse;
+                nbCoups++;
+                bool = passeCodeSuivantLexicoCompat(cod1, cod, rep, nbCoups, nbCouleurs);
+            }
+        }
+        if (nbCoups == nbEssaisMax && bool) {
+            nbEssais = nbEssaisMax + 1;
+        } else {
+            nbEssais = nbCoups + 1;
+        }
         return nbEssais;
     }
 
@@ -512,6 +526,143 @@ public class MasterMindExtended {
         return tabCouleurs;
     }
 
+    //___________________________________________________________________
+    //EXTENSION 3.1 Affichage du plateau
+    /** pré-requis : cod est une matrice, rep est une matrice à 2 colonnes,
+            0 <= nbCoups < cod.length, nbCoups < rep.length et
+    les éléments de cod sont des entiers de 0 à tabCouleurs.length -1
+    action : affiche les nbCoups premières lignes de cod (sous forme
+de mots en utilisant le tableau tabCouleurs) et de rep
+*/
+    public static void affichePlateau(int [][] cod, int [][] rep, int nbCoups, char[] tabCouleurs){
+        for (int i = 0; i < nbCoups; i++) {
+            System.out.print("Essai n°" + (i + 1) + " : ");
+            afficheCode(cod[i], tabCouleurs);
+            System.out.println("Réponse : " + rep[i][0] + " bien placés, " + rep[i][1] + " mal placés");
+        }
+    }
+
+    //___________________________________________________________________
+    //EXTENSION 3.2 Affichage des erreurs de réponse
+    /** pré-requis : cod est une matrice, rep est une matrice à 2 colonnes,
+     * 0 <= nbCoups < cod.length, nbCoups < rep.length,
+     * les éléments de cod sont des entiers de 0 à tabCouleurs.length -1
+     * et codMot est incorrect ou incompatible avec les nbCoups
+     * premières lignes de cod et de rep
+     * action : affiche les erreurs d’incorrection ou d’incompatibilité
+     */
+    public static void afficheErreurs(String codMot, int[][] cod, int[][] rep, int nbCoups, int lgCode, char[] tabCouleurs) {
+        if (codMot.length() != lgCode) {
+            System.out.println("Erreur : le code doit contenir " + lgCode + " couleurs");
+        } else {
+            int[] cod1 = motVersEntiers(codMot, tabCouleurs);
+            if (cod1 == null) {
+                System.out.println("Erreur : les couleurs du code doivent être parmi " + tabCouleurs);
+            } else {
+                if (nbCoups > 0) {
+                    if (!codeCompatible(cod1, cod, rep, nbCoups)) {
+                        System.out.println("Erreur : le code n'est pas compatible avec les précédents");
+                    }
+                }
+            }
+        }
+    }
+
+    private static boolean codeCompatible(int[] cod1, int[][] cod, int[][] rep, int nbCoups) {
+        int bienPlace, malPlace;
+        for (int i = 0; i < nbCoups; i++) {
+            bienPlace = 0;
+            malPlace = 0;
+            for (int j = 0; j < cod1.length; j++) {
+                if (cod1[j] == cod[i][j]) {
+                    bienPlace++;
+                } else {
+                    for (int k = 0; k < cod1.length; k++) {
+                        if (cod1[j] == cod[i][k]) {
+                            malPlace++;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (bienPlace != rep[i][0] || malPlace != rep[i][1]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+//    3.3 Quelques statistiques pour évaluer et comparer les stratégies
+//    Pour évaluer la qualité de la stratégie de l'ordinateur de la version de base et la comparer
+//    éventuellement ave celle de l'extension 3.7, écrire une fonction statsMasterMindIA calcu
+//    lant :
+//    le nombre maximum de propositions de codes pour tous les codes secrets possibles
+//            (ainsi que les codes secrets réalisant ce maximum), et
+//    la moyenne des nombres de propositions de codes pour tous les codes secrets pos
+//    sibles.
+
+    public static void statsMasterMindIA(int lgCode, char[] tabCouleurs) {
+        int nbCoupsMax = 0;
+        int nbCoupsMoy = 0;
+        int nbCodes = (int) Math.pow(tabCouleurs.length, lgCode);
+        int nbCoups;
+        int[] cod;
+        for (int i = 0; i < nbCodes; i++) {
+            cod = entierVersCode(i, tabCouleurs.length, lgCode);
+            nbCoups = nbCoupsIA(cod, lgCode, tabCouleurs);
+            nbCoupsMoy += nbCoups;
+            if (nbCoups > nbCoupsMax) {
+                nbCoupsMax = nbCoups;
+            }
+        }
+        nbCoupsMoy /= nbCodes;
+        System.out.println("Nombre maximum de propositions de codes pour tous les codes secrets possibles : " + nbCoupsMax);
+        System.out.println("Moyenne des nombres de propositions de codes pour tous les codes secrets possibles : " + nbCoupsMoy);
+    }
+
+    private static int nbCoupsIA(int[] cod, int lgCode, char[] tabCouleurs) {
+        int nbCoups = 0;
+        int[] cod1 = new int[lgCode];
+        int bienPlace, malPlace;
+        do {
+            cod1 = propositionIA(nbCoups, lgCode, tabCouleurs);
+            bienPlace = 0;
+            malPlace = 0;
+            for (int j = 0; j < cod1.length; j++) {
+                if (cod1[j] == cod[j]) {
+                    bienPlace++;
+                } else {
+                    for (int k = 0; k < cod1.length; k++) {
+                        if (cod1[j] == cod[k]) {
+                            malPlace++;
+                            break;
+                        }
+                    }
+                }
+            }
+            nbCoups++;
+        } while (bienPlace != lgCode);
+        return nbCoups;
+    }
+
+    private static int[] propositionIA(int nbCoups, int lgCode, char[] tabCouleurs) {
+        int[] cod = new int[lgCode];
+        for (int i = 0; i < lgCode; i++) {
+            cod[i] = nbCoups % tabCouleurs.length;
+            nbCoups /= tabCouleurs.length;
+        }
+        return cod;
+    }
+
+    private static int[] entierVersCode(int i, int length, int lgCode) {
+        int[] cod = new int[lgCode];
+        for (int j = 0; j < lgCode; j++) {
+            cod[j] = i % length;
+            i /= length;
+        }
+        return cod;
+    }
+
     //.........................................................................
     // PROGRAMME PRINCIPAL
     //.........................................................................
@@ -531,7 +682,7 @@ public class MasterMindExtended {
         //Titre du programme
         System.out.println("═════════════════════════════════════════════════════════════════════════════════════════ \n");
         System.out.println(
-                "███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗     ███╗   ███╗██╗███╗   ██╗██████╗ \n" +
+                        "███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗     ███╗   ███╗██╗███╗   ██╗██████╗ \n" +
                         "████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗    ████╗ ████║██║████╗  ██║██╔══██╗\n" +
                         "██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝    ██╔████╔██║██║██╔██╗ ██║██║  ██║\n" +
                         "██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗    ██║╚██╔╝██║██║██║╚██╗██║██║  ██║\n" +
@@ -586,4 +737,4 @@ public class MasterMindExtended {
             System.out.println("La partie est nulle 🚫");
         }
     }
-}
+} // fin de la classe Mastermind
