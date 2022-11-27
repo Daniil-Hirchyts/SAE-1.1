@@ -437,9 +437,7 @@ public class MasterMindBase {
             System.out.println("Essai n°" + (nbCoups + 1) + " de la manche n°" + numManche);
             System.out.println(entiersVersMot(cod1, tabCouleurs));
             reponse = reponseHumain(lgCode);
-            if (reponse[0] == lgCode) {
-                bool = false;
-            }
+            if (reponse[0] == lgCode) bool = false;
             if (bool) {
                 cod[nbCoups] = copieTab(cod1);
                 rep[nbCoups] = reponse;
@@ -447,11 +445,8 @@ public class MasterMindBase {
                 bool = passeCodeSuivantLexicoCompat(cod1, cod, rep, nbCoups, nbCouleurs);
             }
         }
-        if (nbCoups == nbEssaisMax && bool) {
-            nbEssais = nbEssaisMax + 1;
-        } else {
-            nbEssais = nbCoups + 1;
-        }
+        if (nbCoups == nbEssaisMax && bool) nbEssais = nbEssaisMax + 1;
+        else nbEssais = nbCoups + 1;
         return nbEssais;
     }
 
