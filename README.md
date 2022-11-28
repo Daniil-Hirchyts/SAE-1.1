@@ -22,7 +22,7 @@ I.U.T. Montpellier-Sète – Département informatique – BUT 1re année
 
 ## Présentation du jeu de Master Mind et du projet à réaliser  <p id="1">
 
-  <p>Le but de ce projet est de programmer une partie du jeu de <a href="https://fr.wikipedia.org/wiki/Mastermind">MasterMind</a> entre un humain et
+  <p>Le but de ce projet est de programmer une partie du jeu de <a href="https://fr.wikipedia.org/wiki/Mastermind">application.MasterMind</a> entre un humain et
 l’ordinateur.</p>
   <p>Le Master Mind est un jeu à 2 joueurs. Lors d’une manche d’une partie de Master Mind, l’un
 des joueurs est le codeur (ou codificateur) et l’autre le décodeur. Le codeur choisit un code
@@ -196,7 +196,7 @@ triché. Dans ce cas, le programme n’ajoute aucun point au score du joueur pou
 VJBR. Les propositions de l’ordinateur et les réponses du joueur (nombre de pions bien placés
 (BP) et mal placés (MP) respectivement), sont les suivantes :</p>
 
-| Code | BP  | MP  |
+| application.Code | BP  | MP  |
 |------|-----|-----|
 | RRRR | 1   | 0   |
 | RBBB | 1   | 1   |

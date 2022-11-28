@@ -100,7 +100,7 @@ public class Scene3Controller {
         checkResult.setVisible(false);
         mancheSuivant.setVisible(false);
 
-//        UtMM.alertInfo("Choisissez le code secret pour l'ordinateur");
+//        application.UtMM.alertInfo("Choisissez le code secret pour l'ordinateur");
     }
 
     private void addNewGamingRow() {
