@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0"
+            prefWidth="800.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/null"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Scene3Controller">
+
+    <children>
+        <Pane fx:id="paneContainer" layoutX="101.0" layoutY="50.0" prefHeight="600.0" prefWidth="600.0">
+            <children>
+                <Button fx:id="checkResult" layoutX="251.0" layoutY="496.0" mnemonicParsing="false"
+                        onAction="#checkResultOnClick" prefHeight="46.0" prefWidth="91.0" text="Valider"/>
+                <Button fx:id="mancheSuivant" layoutX="256.0" layoutY="496.0" mnemonicParsing="false"
+                        onAction="#mancheSuivantAction" prefHeight="34.0" prefWidth="81.0" text="Suite"/>
+                <Button fx:id="setCode" layoutX="251.0" layoutY="496.0" mnemonicParsing="false"
+                        onAction="#setCodeSecret" prefHeight="46.0" prefWidth="90.0" text="Valider"/>
+                <HBox alignment="CENTER" prefHeight="90.0" prefWidth="600.0" spacing="20.0">
+                    <children>
+                        <VBox alignment="CENTER_LEFT" prefWidth="300.0" spacing="10.0">
+                            <children>
+                                <Label fx:id="mancheLabel" text="Manche : "/>
+                                <Label fx:id="essaiLabel" text="Essai : "/>
+                            </children>
+                            <HBox.margin>
+                                <Insets/>
+                            </HBox.margin>
+                            <padding>
+                                <Insets left="20.0"/>
+                            </padding>
+                        </VBox>
+                        <VBox alignment="CENTER_RIGHT" prefWidth="300.0" spacing="10.0">
+                            <children>
+                                <Label text="J : Encodeur"/>
+                                <Label text="O : Décodeur"/>
+                            </children>
+                            <padding>
+                                <Insets right="20.0"/>
+                            </padding>
+                        </VBox>
+                    </children>
+                </HBox>
+                <VBox layoutY="90.0" prefHeight="300.0" prefWidth="200.0">
+                    <padding>
+                        <Insets left="5.0" right="5.0"/>
+                    </padding>
+                    <children>
+                        <GridPane fx:id="gameGrid" alignment="CENTER" hgap="3.0" prefHeight="50.0" vgap="5.0">
+                            <padding>
+                                <Insets bottom="7.0" left="7.0" right="7.0" top="7.0"/>
+                            </padding>
+                        </GridPane>
+                    </children>
+                </VBox>
+                <VBox layoutX="200.0" layoutY="90.0" prefHeight="300.0" prefWidth="200.0">
+                    <padding>
+                        <Insets left="5.0" right="5.0"/>
+                    </padding>
+                    <children>
+                        <GridPane fx:id="gameGridOrdi" alignment="CENTER" hgap="3.0" prefHeight="50.0" vgap="5.0">
+                            <padding>
+                                <Insets bottom="7.0" left="7.0" right="7.0" top="7.0"/>
+                            </padding>
+                        </GridPane>
+                    </children>
+                </VBox>
+                <VBox layoutX="400.0" layoutY="90.0" prefHeight="300.0" prefWidth="200.0">
+                    <padding>
+                        <Insets left="5.0" right="5.0"/>
+                    </padding>
+                    <children>
+                        <GridPane fx:id="defaultColors" alignment="CENTER" hgap="3.0" prefHeight="50.0" vgap="5.0">
+                            <padding>
+                                <Insets bottom="7.0" left="7.0" right="7.0" top="7.0"/>
+                            </padding>
+                        </GridPane>
+                    </children>
+                </VBox>
+                <GridPane fx:id="choixHumainCode" alignment="CENTER" hgap="3.0" layoutX="205.0" layoutY="90.0"
+                          prefHeight="50.0" prefWidth="190.0" vgap="5.0">
+                    <padding>
+                        <Insets bottom="7.0" left="7.0" right="7.0" top="7.0"/>
+                    </padding>
+                </GridPane>
+                <GridPane fx:id="codeHumain" alignment="CENTER" hgap="3.0" layoutX="205.0" layoutY="20.0"
+                          prefHeight="50.0" prefWidth="190.0" vgap="5.0">
+                    <padding>
+                        <Insets bottom="7.0" left="7.0" right="7.0" top="7.0"/>
+                    </padding>
+                </GridPane>
+            </children>
+        </Pane>
+
+    </children>
+
+</AnchorPane>
