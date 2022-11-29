@@ -118,4 +118,33 @@ public class UtMM {
         for (int i = 0; i < t1.length; i++) if (t1[i] != t2[i]) return false;
         return true;
     }
+
+    public static int saisirEntierPositif() {
+        int n;
+        do {
+            System.out.print("Saisir un entier strictement positif : ");
+            n = UtMM.lireInt();
+        } while (n <= 0);
+        return n;
+    }
+
+    private static void afficheCode(int[] cod, char[] tabCouleurs) {
+        for (int j : cod) System.out.print(tabCouleurs[j]);
+        System.out.println();
+    }
+
+    public static String entiersVersMot(int[] cod, char[] tabCouleurs) {
+        String s = "";
+        for (int i : cod) s += tabCouleurs[i];
+        return s;
+    }
+
+    public static int saisirEntierPairPositif() {
+        int n;
+        do {
+            System.out.print("Saisir un entier pair strictement positif : ");
+            n = UtMM.lireInt();
+        } while (n <= 0 || n % 2 != 0);
+        return n;
+    }
 }

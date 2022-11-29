@@ -29,6 +29,7 @@ public class MancheOrdinateur {
     }
 
     public void newCode() {
+        if (reponse[0] == lgCode) return;
         cod[nbCoups] = UtMM.copieTab(cod1);
         rep[nbCoups] = reponse;
         nbCoups++;
@@ -44,12 +45,14 @@ public class MancheOrdinateur {
         System.out.println(this.reponse[0] + " " + this.reponse[1]);
     }
 
-    public void passeCodeSuivantLexicoCompat(int[] cod1, int[][] cod, int[][] rep, int nbCoups, int nbCouleurs) {
+    public boolean passeCodeSuivantLexicoCompat(int[] cod1, int[][] cod, int[][] rep, int nbCoups, int nbCouleurs) {
         boolean bool = false;
         while (!bool) {
             bool = passeCodeSuivantLexico(cod1, nbCouleurs);
             if (bool) bool = estCompat(cod1, cod, rep, nbCoups, nbCouleurs);
+            else return false;
         }
+        return bool;
     }
 
     public boolean passeCodeSuivantLexico(int[] cod1, int nbCouleurs) {

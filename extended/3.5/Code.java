@@ -51,6 +51,13 @@ public class Code {
         return nb;
     }
 
+    public static int[] nbBienMalPlaces(int[] cod1, int[] cod2, int nbCouleurs) {
+        int[] t = new int[2];
+        t[0] = nbBienPlaces(cod1, cod2);
+        t[1] = nbCommuns(cod1, cod2, nbCouleurs) - t[0];
+        return t;
+    }
+
     public static int[] tabFrequence(int[] cod, int nbCouleurs) {
         int[] t = new int[nbCouleurs];
         for (int j : cod) t[j]++;

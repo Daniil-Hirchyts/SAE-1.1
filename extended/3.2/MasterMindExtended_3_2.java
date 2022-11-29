@@ -277,13 +277,13 @@ public class MasterMindExtended_3_2 {
         int nbCoups = 0;
         int[] cod1 = codeAleat(lgCode, tabCouleurs.length);
         int[] cod2 = propositionCodeHumain(nbCoups, lgCode, tabCouleurs);
-        while (nbCoups < nbEssaisMax && !Arrays.equals(cod1, cod2)) {
+        while (nbCoups < (nbEssaisMax - 1) && !Arrays.equals(cod1, cod2)) {
             int[] t = nbBienMalPlaces(cod1, cod2, tabCouleurs.length);
             System.out.println("Bien placés : " + t[0] + " Mal placés : " + t[1]);
             nbCoups++;
             cod2 = propositionCodeHumain(nbCoups, lgCode, tabCouleurs);
         }
-        if (nbCoups == nbEssaisMax) System.out.println("Perdu ! Le code était : " + entiersVersMot(cod1, tabCouleurs));
+        if (nbCoups == nbEssaisMax - 1) System.out.println("Perdu ! Le code était : " + entiersVersMot(cod1, tabCouleurs));
         else System.out.println("Gagné en " + (nbCoups + 1) + " coups !");
         return nbCoups + 1;
     }
@@ -623,18 +623,11 @@ public class MasterMindExtended_3_2 {
         for (int i = 0; i < nbManches; i++) {
             System.out.println("═════════════════════════════════════════════════════════════════════════════════════════");
             System.out.println("Manche " + (i + 1) + " :");
-            if (i % 2 == 0) {
-                score[0] += mancheOrdinateur(lgCode, tabCouleurs, i + 1, nbEssaisMax);
-            } else {
-                score[1] += mancheHumain(lgCode, tabCouleurs, i + 1, nbEssaisMax);
-            }
+            if (i % 2 == 0) score[0] += mancheOrdinateur(lgCode, tabCouleurs, i + 1, nbEssaisMax);
+            else score[1] += mancheHumain(lgCode, tabCouleurs, i + 1, nbEssaisMax);
         }
-        if (score[0] < score[1]) {
-            System.out.println("L'ordinateur a gagné la partie avec un score de " + score[0] + " points ⭐️!");
-        } else if (score[0] > score[1]) {
-            System.out.println("Le joueur humain a gagné la partie avec un score de " + score[1] + " points ⭐️!");
-        } else {
-            System.out.println("La partie est nulle 🚫");
-        }
+        if (score[0] < score[1]) System.out.println("L'ordinateur a gagné la partie avec un score de " + score[0] + " points ⭐️!");
+        else if (score[0] > score[1]) System.out.println("Le joueur humain a gagné la partie avec un score de " + score[1] + " points ⭐️!");
+        else if ((score[0] == score[1])) System.out.println("La partie est nulle 🚫");
     }
 } // fin de la classe Mastermind
