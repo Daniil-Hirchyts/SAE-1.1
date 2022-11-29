@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class MasterMindBase {
+public class MasterMindExtended_3_1 {
 
     //.........................................................................
     // OUTILS DE BASE
@@ -275,12 +275,17 @@ public class MasterMindBase {
      */
     public static int mancheHumain(int lgCode, char[] tabCouleurs, int numManche, int nbEssaisMax) {
         int nbCoups = 0;
+        int[][] cod = new int[nbEssaisMax][lgCode];
+        int[][] rep = new int[nbEssaisMax][2];
         int[] cod1 = codeAleat(lgCode, tabCouleurs.length);
         int[] cod2 = propositionCodeHumain(nbCoups, lgCode, tabCouleurs);
         while (nbCoups < nbEssaisMax && !Arrays.equals(cod1, cod2)) {
             int[] t = nbBienMalPlaces(cod1, cod2, tabCouleurs.length);
             System.out.println("Bien placés : " + t[0] + " Mal placés : " + t[1]);
             nbCoups++;
+            cod[nbCoups] = cod2;
+            rep[nbCoups] = t;
+            affichePlateau(cod, rep, nbCoups, tabCouleurs);
             cod2 = propositionCodeHumain(nbCoups, lgCode, tabCouleurs);
         }
         if (nbCoups == nbEssaisMax) System.out.println("Perdu ! Le code était : " + entiersVersMot(cod1, tabCouleurs));
@@ -443,6 +448,7 @@ public class MasterMindBase {
                 cod[nbCoups] = copieTab(cod1);
                 rep[nbCoups] = reponse;
                 nbCoups++;
+                affichePlateau(cod, rep, nbCoups, tabCouleurs);
                 bool = passeCodeSuivantLexicoCompat(cod1, cod, rep, nbCoups, nbCouleurs);
             }
         }
@@ -518,6 +524,18 @@ public class MasterMindBase {
             }
         }
         return tabCouleurs;
+    }
+
+
+    /**
+     * pré-requis : cod est une matrice, rep est une matrice à 2 colonnes,0 <= nbCoups < cod.length, nbCoups < rep.length etles éléments de cod sont des entiers de 0 à tabCouleurs.length -1action : affiche les nbCoups premières lignes de cod (sous formede mots en utilisant le tableau tabCouleurs) et de rep
+     */
+    public static void affichePlateau(int[][] cod, int[][] rep, int nbCoups, char[] tabCouleurs) {
+        for (int i = 0; i < nbCoups; i++) {
+            System.out.print("☕️Essai n°" + (i + 1) + " : ");
+            afficheCode(cod[i], tabCouleurs);
+            System.out.println("Réponse : " + rep[i][0] + " bien placé(s) et " + rep[i][1] + " mal placé(s)");
+        }
     }
 
     //.........................................................................

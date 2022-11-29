@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class MasterMindBase {
+public class MasterMindExtended_3_6 {
 
     //.........................................................................
     // OUTILS DE BASE
@@ -430,7 +430,7 @@ public class MasterMindBase {
         int[][] cod = new int[nbEssaisMax][lgCode];
         int[][] rep = new int[nbEssaisMax][2];
         int nbCoups = 0;
-        int[] cod1 = new int[lgCode];
+        int[] cod1 = codeAleat(lgCode, nbCouleurs);
         int[] reponse = new int[2];
         int nbEssais = 0;
         boolean bool = true;

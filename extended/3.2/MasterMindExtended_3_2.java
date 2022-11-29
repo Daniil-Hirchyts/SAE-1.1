@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class MasterMindBase {
+public class MasterMindExtended_3_2 {
 
     //.........................................................................
     // OUTILS DE BASE
@@ -405,6 +405,7 @@ public class MasterMindBase {
         while (!bool) {
             bool = passeCodeSuivantLexico(cod1, nbCouleurs);
             if (bool) bool = estCompat(cod1, cod, rep, nbCoups, nbCouleurs);
+            else return false;
         }
         return bool;
 
@@ -424,8 +425,10 @@ public class MasterMindBase {
      * @Pré-requis: numManche >= 2
      * @Action: effectue la (numManche)ème manche où l'humain est le codeur et l'ordinateur le décodeur
      * (le paramètre numManche ne sert que pour l'affichage)
+     * return 0 if le code proposé est incompatible avec les réponses précédentes
      */
     public static int mancheOrdinateur(int lgCode, char[] tabCouleurs, int numManche, int nbEssaisMax) {
+        String codMot = saisirCodeAleatoire(lgCode, tabCouleurs);
         int nbCouleurs = tabCouleurs.length;
         int[][] cod = new int[nbEssaisMax][lgCode];
         int[][] rep = new int[nbEssaisMax][2];
@@ -446,11 +449,14 @@ public class MasterMindBase {
                 bool = passeCodeSuivantLexicoCompat(cod1, cod, rep, nbCoups, nbCouleurs);
             }
         }
-        if (nbCoups == nbEssaisMax && bool) nbEssais = nbEssaisMax + 1;
+        if (nbCoups == nbEssaisMax || !bool) {
+            afficheErreurs(codMot, cod, rep, nbCoups, lgCode, tabCouleurs);
+            return 0;
+        }
+//        if (nbCoups == nbEssaisMax && bool) nbEssais = nbEssaisMax + 1;
         else nbEssais = nbCoups + 1;
         return nbEssais;
     }
-
     //___________________________________________________________________
     private static void afficheCode(int[] cod, char[] tabCouleurs) {
         for (int j : cod) System.out.print(tabCouleurs[j]);
@@ -520,9 +526,46 @@ public class MasterMindBase {
         return tabCouleurs;
     }
 
+    /**
+     * pré-requis : cod est une matrice, rep est une matrice à 2 colonnes,0 <= nbCoups < cod.length, nbCoups < rep.length,les éléments de cod sont des entiers de 0 à tabCouleurs.length -1et codMot est incorrect ou incompatible avec les nbCoupspremières lignes de cod et de repaction : affiche les erreurs d’incorrection ou d’incompatibilité
+     */
+    public static void afficheErreurs(String codMot, int[][] cod, int[][] rep, int nbCoups, int lgCode, char[] tabCouleurs) {
+        int[][] reponse = new int[cod.length-1][2];
+        for (int i = 0; i < nbCoups; i++) {
+            reponse[i] = nbBienMalPlaces(motVersEntiers(codMot, tabCouleurs), cod[i], lgCode);
+            if (reponse[i][0] != rep[i][0] || reponse[i][1] != rep[i][1]) {
+                System.out.println("Erreur : le code proposé est incompatible avec les réponses précédentes");
+                break;
+            }
+        }
+    }
+
     //.........................................................................
     // PROGRAMME PRINCIPAL
     //.........................................................................
+
+    public static String saisirCodeAleatoire(int lgCode, char[] tabCouleurs) {
+        String codMot;
+        do {
+            System.out.print("Saisir un code de " + lgCode + " couleurs : ");
+            codMot = lireString();
+        } while (codMot.length() != lgCode || !verifCode(codMot, tabCouleurs));
+        return codMot;
+    }
+
+    private static boolean verifCode(String codMot, char[] tabCouleurs) {
+        for (int i = 0; i < codMot.length(); i++) {
+            boolean bool = false;
+            for (char c : tabCouleurs) {
+                if (codMot.charAt(i) == c) {
+                    bool = true;
+                    break;
+                }
+            }
+            if (!bool) return false;
+        }
+        return true;
+    }
 
     //___________________________________________________________________
 

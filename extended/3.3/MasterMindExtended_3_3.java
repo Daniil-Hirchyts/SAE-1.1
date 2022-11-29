@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class MasterMindBase {
+public class MasterMindExtended_3_3 {
 
     //.........................................................................
     // OUTILS DE BASE
@@ -520,6 +520,10 @@ public class MasterMindBase {
         return tabCouleurs;
     }
 
+    public static void statsMasterMindIA(int lgCode, char[] tabCouleurs, int nbEssaisMax) {
+
+    }
+
     //.........................................................................
     // PROGRAMME PRINCIPAL
     //.........................................................................
@@ -593,5 +597,7 @@ public class MasterMindBase {
         } else {
             System.out.println("La partie est nulle 🚫");
         }
+        statsMasterMindIA(lgCode, tabCouleurs, nbEssaisMax);
     }
-} // fin de la classe Mastermind
+
+    } // fin de la classe Mastermind
