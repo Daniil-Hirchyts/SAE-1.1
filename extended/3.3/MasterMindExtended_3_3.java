@@ -283,7 +283,8 @@ public class MasterMindExtended_3_3 {
             nbCoups++;
             cod2 = propositionCodeHumain(nbCoups, lgCode, tabCouleurs);
         }
-        if (nbCoups == nbEssaisMax - 1) System.out.println("Perdu ! Le code était : " + entiersVersMot(cod1, tabCouleurs));
+        if (nbCoups == nbEssaisMax - 1)
+            System.out.println("Perdu ! Le code était : " + entiersVersMot(cod1, tabCouleurs));
         else System.out.println("Gagné en " + (nbCoups + 1) + " coups !");
         return nbCoups + 1;
     }
@@ -405,6 +406,7 @@ public class MasterMindExtended_3_3 {
         while (!bool) {
             bool = passeCodeSuivantLexico(cod1, nbCouleurs);
             if (bool) bool = estCompat(cod1, cod, rep, nbCoups, nbCouleurs);
+            else return false;
         }
         return bool;
 
@@ -520,9 +522,55 @@ public class MasterMindExtended_3_3 {
         return tabCouleurs;
     }
 
-    public static void statsMasterMindIA(int lgCode, char[] tabCouleurs, int nbEssaisMax) {
-
+    public static int[] tabCoul(int i, int lgCode, int nbCouleurs) {
+        int[] tabTemp = new int[lgCode];
+        for (int j = 0; j < lgCode; j++) tabTemp[j] = 0;
+        for (int j = 0; j < i; j++) passeCodeSuivantLexico(tabTemp, nbCouleurs);
+        return tabTemp;
     }
+
+    public static void statsMasterMindIA(int lgCode, int nbCouleurs, char[] tabCouleurs, int nbEssais) {
+        int max = 0;
+        int somme = 0; // somme des nombres de propositions de codes pour tous les codes secrets
+        int nbCodes = (int) Math.pow(nbCouleurs, lgCode); // nombre total de codes secrets possibles
+        int[] tab = new int[lgCode]; // code secret
+        int nbCoups; // nombre de propositions de codes pour le code secret
+        int nbMaxCoups = 0;
+        for (int i = 0; i < nbCodes; i++) {
+            tab = tabCoul(i, lgCode, nbCouleurs);
+            nbCoups = nbCoupsStat(tab, lgCode, tabCouleurs, nbCouleurs, nbEssais);
+            if (nbCoups > max) {
+                max = nbCoups;
+                nbMaxCoups = 1;
+
+            } else if (nbCoups == max) nbMaxCoups++;
+            somme += nbCoups;
+
+        }
+        double moyenne = (double) somme / nbCodes;
+        System.out.println("Nombre de codes secrets possibles : " + nbCodes);
+        System.out.println("Nombre maximum de propositions de codes : " + max);
+        System.out.println("Codes secrets réalisant ce maximum : " + nbMaxCoups);
+        System.out.println("Moyenne des nombres de propositions de codes : " + moyenne);
+    }
+
+    public static int nbCoupsStat(int[] codeSecret, int lgCode, char[] tabCouleurs, int nbCouleurs, int nbEssaisMax) {
+        int nbCoups = 0;
+        int[] cod1 = new int[lgCode];
+        int[] cod[] = new int[nbEssaisMax][lgCode];
+        int[] rep[] = new int[nbEssaisMax][2];
+        int[] reponse = new int[2];
+        boolean bool = true;
+        while (nbCoups < nbEssaisMax && bool) {
+            cod[nbCoups] = copieTab(cod1);
+            reponse = nbBienMalPlaces(codeSecret, cod1, nbCouleurs);
+            rep[nbCoups] = reponse;
+            nbCoups++;
+            bool = passeCodeSuivantLexicoCompat(cod1, cod, rep, nbCoups, nbCouleurs);
+        }
+        return nbCoups;
+    }
+
 
     //.........................................................................
     // PROGRAMME PRINCIPAL
@@ -587,10 +635,12 @@ public class MasterMindExtended_3_3 {
             if (i % 2 == 0) score[0] += mancheOrdinateur(lgCode, tabCouleurs, i + 1, nbEssaisMax);
             else score[1] += mancheHumain(lgCode, tabCouleurs, i + 1, nbEssaisMax);
         }
-        if (score[0] < score[1]) System.out.println("L'ordinateur a gagné la partie avec un score de " + score[0] + " points ⭐️!");
-        else if (score[0] > score[1]) System.out.println("Le joueur humain a gagné la partie avec un score de " + score[1] + " points ⭐️!");
+        if (score[0] < score[1])
+            System.out.println("L'ordinateur a gagné la partie avec un score de " + score[0] + " points ⭐️!");
+        else if (score[0] > score[1])
+            System.out.println("Le joueur humain a gagné la partie avec un score de " + score[1] + " points ⭐️!");
         else if ((score[0] == score[1])) System.out.println("La partie est nulle 🚫");
-        statsMasterMindIA(lgCode, tabCouleurs, nbEssaisMax);
+        statsMasterMindIA(lgCode, tabCouleurs.length, tabCouleurs, nbEssaisMax);
     }
 
-    } // fin de la classe Mastermind
+} // fin de la classe Mastermind
