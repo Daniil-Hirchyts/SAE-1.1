@@ -3,26 +3,13 @@ import java.util.Scanner;
 
 public class MasterMindBase {
 
+    private static final Scanner scanner = new Scanner(System.in);
+
     //.........................................................................
     // OUTILS DE BASE
     //.........................................................................
 
     // fonctions classiques sur les tableaux
-
-    //______________________________________________
-
-    /**
-     * @return scanne un entier
-     */
-    public static int lireInt() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextInt();
-    }
-
-    public static String lireString() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
-    }
 
     //______________________________________________
 
@@ -47,7 +34,7 @@ public class MasterMindBase {
      */
     public static int[] copieTab(int[] tab) {
         int[] c = new int[tab.length];
-        for (int i = 0; i < tab.length; i++) c[i] = tab[i];
+        System.arraycopy(tab, 0, c, 0, tab.length);
         return c;
     }
 
@@ -192,7 +179,7 @@ public class MasterMindBase {
         String codMot = "";// code saisi par l'utilisateur
         do {
             System.out.println("Proposition N°" + (nbCoups + 1) + " : ");
-            codMot = lireString();
+            codMot = scanner.nextLine();
         } while (!codeCorrect(codMot, lgCode, tabCouleurs));
         return motVersEntiers(codMot, tabCouleurs);
     }
@@ -333,9 +320,10 @@ public class MasterMindBase {
         int[] rep = new int[2];
         do {
             System.out.print("Nombre de codes bien placés : ");
-            rep[0] = lireInt(); // nombre de codes bien placés
+            rep[0] = scanner.nextInt(); // nombre de codes bien placés
             System.out.print("Nombre de codes mal placés : ");
-            rep[1] = lireInt(); // nombre de codes mal placés
+//            rep[1] = scs.nextInt();
+            rep[1] = scanner.nextInt(); // nombre de codes mal placés
         } while (!repCorrecte(rep, lgCode));
         return rep;
     }
@@ -471,7 +459,7 @@ public class MasterMindBase {
         int n;
         do {
             System.out.print("Saisir un entier strictement positif : ");
-            n = lireInt();
+            n = scanner.nextInt();
         } while (n <= 0);
         return n;
     }
@@ -486,7 +474,7 @@ public class MasterMindBase {
         int n;
         do {
             System.out.print("Saisir un entier pair strictement positif : ");
-            n = lireInt();
+            n = scanner.nextInt();
         } while (n <= 0 || n % 2 != 0);
         return n;
     }
@@ -503,12 +491,12 @@ public class MasterMindBase {
         int n;
         do {
             System.out.print("Saisir le nombre de couleurs strictement positif entre 4 et 6 : ");
-            n = lireInt();
+            n = scanner.nextInt();
         } while (n <= 0);
         char[] tabCouleurs = new char[n];
         for (int i = 0; i < n; i++) {
             System.out.print("Saisir le nom de la couleur n°" + (i + 1) + " : ");
-            tabCouleurs[i] = lireString().charAt(0);
+            tabCouleurs[i] = scanner.nextLine().charAt(0);
             for (int j = 0; j < i; j++) {
                 if (tabCouleurs[i] == tabCouleurs[j]) {
                     System.out.println("Erreur : l'initiale du nom de la couleur n°" + (i + 1) + " est déjà utilisée");
