@@ -3,16 +3,13 @@ import java.util.Scanner;
 
 public class MasterMindBase {
 
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
     //.........................................................................
     // OUTILS DE BASE
     //.........................................................................
 
-    // fonctions classiques sur les tableaux
-
     //______________________________________________
-
     /**
      * @param nb  nombre d'éléments du tableau
      * @param val valeur à affecter à chaque élément
@@ -26,7 +23,6 @@ public class MasterMindBase {
     }
 
     //______________________________________________
-
     /**
      * @param tab tableau d'entiers
      * @return copie de tab
@@ -39,7 +35,6 @@ public class MasterMindBase {
     }
 
     //______________________________________________
-
     /**
      * @param t tableau d'entiers
      * @return la liste des éléments de t entre parenthèses et séparés par des virgules
@@ -55,7 +50,6 @@ public class MasterMindBase {
     }
 
     //______________________________________________
-
     /**
      * @param t tableau de caractères
      * @param c charactère à compter
@@ -69,7 +63,6 @@ public class MasterMindBase {
     }
 
     //______________________________________________
-
     /**
      * @param t tableau de caractères
      * @param c : caractère
@@ -81,7 +74,6 @@ public class MasterMindBase {
     }
 
     //______________________________________________
-
     /**
      * @param t tableau de caractères
      * @return vrai ssi les éléments de t sont différents
@@ -97,12 +89,12 @@ public class MasterMindBase {
         return true;
     }
 
-    // Dans toutes les fonctions suivantes, on a comme pré-requis implicites sur les paramètres lgCode, nbCouleurs et tabCouleurs :
-    // lgCode > 0, nbCouleurs > 0, tabCouleurs.length > 0 et les éléments de tabCouleurs sont différents
-    // fonctions sur les codes pour la manche Humain
+    /*
+     * Dans toutes les fonctions suivantes, on a comme pré-requis implicites sur les paramètres lgCode, nbCouleurs et tabCouleurs :
+     * lgCode > 0, nbCouleurs > 0, tabCouleurs.length > 0 et les éléments de tabCouleurs sont différents fonctions sur les codes pour la manche Humain
+     */
 
     //______________________________________________
-
     /**
      * @param t1 tableau d'entiers
      * @param t2 tableau d'entiers
@@ -115,7 +107,6 @@ public class MasterMindBase {
     }
 
     //____________________________________________________________
-
     /**
      * @param lgCode     : longueur du code
      * @param nbCouleurs : nombre de couleurs
@@ -129,7 +120,6 @@ public class MasterMindBase {
     }
 
     //____________________________________________________________
-
     /**
      * @param codMot      code à deviner
      * @param lgCode      longueur du code
@@ -152,7 +142,6 @@ public class MasterMindBase {
     }
 
     //____________________________________________________________
-
     /**
      * @param codMot      code à deviner
      * @param tabCouleurs tableau de caractères contenant les couleurs
@@ -167,7 +156,6 @@ public class MasterMindBase {
     }
 
     //____________________________________________________________
-
     /**
      * @param lgCode      longueur du code
      * @param tabCouleurs tableau de caractères contenant les couleurs
@@ -185,7 +173,6 @@ public class MasterMindBase {
     }
 
     //____________________________________________________________
-
     /**
      * @param cod1 code à deviner
      * @param cod2 code proposé
@@ -199,7 +186,6 @@ public class MasterMindBase {
     }
 
     //____________________________________________________________
-
     /**
      * @param cod        code à deviner
      * @param nbCouleurs nombre de couleurs
@@ -213,7 +199,6 @@ public class MasterMindBase {
     }
 
     //____________________________________________________________
-
     /**
      * @param cod1       code à deviner
      * @param cod2       code proposé
@@ -234,7 +219,6 @@ public class MasterMindBase {
     //.........................................................................
 
     //____________________________________________________________
-
     /**
      * @param cod1       code à deviner
      * @param cod2       code proposé
@@ -251,7 +235,6 @@ public class MasterMindBase {
     }
 
     //____________________________________________________________
-
     /**
      * @param numManche   numéro de la manche
      * @param nbEssaisMax nombre maximum d'essais
@@ -270,8 +253,7 @@ public class MasterMindBase {
             nbCoups++;
             cod2 = propositionCodeHumain(nbCoups, lgCode, tabCouleurs);
         }
-        if (nbCoups == nbEssaisMax - 1)
-            System.out.println("Perdu ! Le code était : " + entiersVersMot(cod1, tabCouleurs));
+        if (nbCoups == nbEssaisMax - 1) System.out.println("Perdu ! Le code était : " + entiersVersMot(cod1, tabCouleurs));
         else System.out.println("Gagné en " + (nbCoups + 1) + " coups !");
         return nbCoups + 1;
     }
@@ -281,7 +263,6 @@ public class MasterMindBase {
     //...................................................................
 
     //____________________________________________________________
-
     /**
      * @param cod         code à transformer
      * @param tabCouleurs tableau de caractères contenant les couleurs
@@ -295,7 +276,6 @@ public class MasterMindBase {
     }
 
     //___________________________________________________________________
-
     /**
      * @param rep    tableau de 2 entiers
      * @param lgCode longueur du code
@@ -311,7 +291,6 @@ public class MasterMindBase {
     }
 
     //___________________________________________________________________
-
     /**
      * @param lgCode longueur du code
      * @return le tableau de 2 entiers contenant le nombre de codes bien et mal placés
@@ -323,17 +302,14 @@ public class MasterMindBase {
             System.out.print("Nombre de codes bien placés : ");
             rep[0] = scanner.nextInt(); // nombre de codes bien placés
             System.out.print("Nombre de codes mal placés : ");
-//            rep[1] = scs.nextInt();
             rep[1] = scanner.nextInt(); // nombre de codes mal placés
         } while (!repCorrecte(rep, lgCode));
         return rep;
     }
 
     //___________________________________________________________________
-
     /**
      * CHANGE : action si le code suivant n'existe pas
-     * ************************************************
      * pré-requis : les éléments de cod1 sont des entiers de 0 à nbCouleurs-1
      * action/résultat : met dans cod1 le code qui le suit selon l'ordre lexicographique (dans l'ensemble
      * des codes à valeurs  de 0 à nbCouleurs-1) et retourne vrai si ce code existe,
@@ -356,10 +332,8 @@ public class MasterMindBase {
     }
 
     //___________________________________________________________________
-
     /**
      * CHANGE : ajout du paramètre cod1 et modification des spécifications
-     * ********************************************************************
      * pré-requis : cod est une matrice à cod1.length colonnes, rep est une matrice à 2 colonnes, 0 <= nbCoups < cod.length,
      * nbCoups < rep.length et les éléments de cod1 et de cod sont des entiers de 0 à nbCouleurs-1
      * résultat : vrai ssi cod1 est compatible avec les nbCoups premières lignes de cod et de rep,
@@ -377,11 +351,9 @@ public class MasterMindBase {
     }
 
     //___________________________________________________________________
-
     /**
      * CHANGE : renommage de passePropSuivante en passeCodeSuivantLexicoCompat,
      * ajout du paramètre cod1 et modification des spécifications
-     * *************************************************************************
      * pré-requis : cod est une matrice à cod1.length colonnes, rep est une matrice à 2 colonnes, 0 <= nbCoups < cod.length,
      * nbCoups < rep.length et les éléments de cod1 et de cod sont des entiers de 0 à nbCouleurs-1
      * action/résultat : met dans cod1 le plus petit code (selon l'ordre lexicographique (dans l'ensemble
@@ -400,7 +372,6 @@ public class MasterMindBase {
     }
 
     //___________________________________________________________________
-
     /**
      * @param lgCode      longueur du code
      * @param tabCouleurs tableau de couleurs
@@ -451,7 +422,6 @@ public class MasterMindBase {
     //.........................................................................
 
     //___________________________________________________________________
-
     /**
      * @return l'entier strictement positif saisi
      * @Action: demande au joueur humain de saisir un entier strictement positif, avec re-saisie éventuelle jusqu'à ce qu'elle soit correcte
@@ -466,7 +436,6 @@ public class MasterMindBase {
     }
 
     //___________________________________________________________________
-
     /**
      * @return l'entier pair strictement positif saisi
      * @Action: demande au joueur humain de saisir un entier pair strictement positif, avec re-saisie éventuelle jusqu'à ce qu'elle soit correcte
@@ -481,7 +450,6 @@ public class MasterMindBase {
     }
 
     //___________________________________________________________________
-
     /**
      * @return le tableau des initiales des noms de couleurs saisis
      * @Action: demande au joueur humain de saisir le nombre de couleurs (strictement positif),
@@ -512,7 +480,6 @@ public class MasterMindBase {
     //.........................................................................
 
     //___________________________________________________________________
-
     /**
      * @Action: demande à l'utilisateur de saisir les paramètres de la partie (lgCode, tabCouleurs, nbManches, nbEssaisMax),
      * effectue la partie et affiche le résultat (identité du gagnant ou match nul).
@@ -522,24 +489,24 @@ public class MasterMindBase {
      * Toute donnée incorrecte doit être re-saisie jusqu'à ce qu'elle soit correcte.
      */
     public static void main(String[] args) {
-
-        //Titre du programme
-        System.out.println("═════════════════════════════════════════════════════════════════════════════════════════ \n");
-        System.out.println(
-                        "███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗     ███╗   ███╗██╗███╗   ██╗██████╗ \n" +
-                        "████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗    ████╗ ████║██║████╗  ██║██╔══██╗\n" +
-                        "██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝    ██╔████╔██║██║██╔██╗ ██║██║  ██║\n" +
-                        "██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗    ██║╚██╔╝██║██║██║╚██╗██║██║  ██║\n" +
-                        "██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║    ██║ ╚═╝ ██║██║██║ ╚████║██████╔╝\n" +
-                        "╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝    ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═════╝ \n\n");
+        System.out.print("═════════════════════════════════════════════════════════════════════════════════════════ \n");
+        System.out.print(
+                """
+                        ███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗     ███╗   ███╗██╗███╗   ██╗██████╗
+                        ████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗    ████╗ ████║██║████╗  ██║██╔══██╗
+                        ██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝    ██╔████╔██║██║██╔██╗ ██║██║  ██║
+                        ██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗    ██║╚██╔╝██║██║██║╚██╗██║██║  ██║
+                        ██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║    ██║ ╚═╝ ██║██║██║ ╚████║██████╔╝
+                        ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝    ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═════╝\s
+                        """);
         System.out.println("═════════════════════════════════════════════════════════════════════════════════════════");
         System.out.println("                                        Réalisé par : Daniil HIRCHYTS & Youssera OULMEKKI");
         System.out.println("                                 IUT Montpellier-Sète, Département Informatique 2022-2023");
         System.out.println("═════════════════════════════════════════════════════════════════════════════════════════");
-        System.out.println("Pour commencer, veuillez saisir les paramètres de la partie :");
+        System.out.println("Pour commencer, veuillez saisir les paramètres de la partie");
         System.out.print("Longueur du code secret : "); int lgCode = saisirEntierPositif();
         System.out.print("\n" + "Couleurs : "); char[] tabCouleurs = saisirCouleurs();
-        System.out.print("\n" + "Nombre de manches :"); int nbManches = saisirEntierPairPositif();
+        System.out.print("\n" + "Nombre de manches : "); int nbManches = saisirEntierPairPositif();
         System.out.print("\n" + "Nombre d'essais maximum par manche : "); int nbEssaisMax = saisirEntierPositif();
         System.out.println("\n" + "═════════════════════════════════════════════════════════════════════════════════════════");
 
@@ -550,7 +517,7 @@ public class MasterMindBase {
         System.out.println("Nombre d'essais maximum par manche : " + nbEssaisMax);
         System.out.println("═════════════════════════════════════════════════════════════════════════════════════════");
 
-        System.out.println("La partie commence 🚩!");
+        System.out.println("La partie commence!");
         int[] score = new int[2];
         for (int i = 0; i < nbManches; i++) {
             System.out.println("═════════════════════════════════════════════════════════════════════════════════════════");
@@ -558,10 +525,11 @@ public class MasterMindBase {
             if (i % 2 == 0) score[0] += mancheOrdinateur(lgCode, tabCouleurs, i + 1, nbEssaisMax);
             else score[1] += mancheHumain(lgCode, tabCouleurs, i + 1, nbEssaisMax);
         }
-        if (score[0] < score[1])
-            System.out.println("L'ordinateur a gagné la partie avec un score de " + score[0] + " points ⭐️!");
-        else if (score[0] > score[1])
-            System.out.println("Le joueur humain a gagné la partie avec un score de " + score[1] + " points ⭐️!");
-        else System.out.println("La partie est nulle 🚫");
+        if (score[0] < score[1]) System.out.println("Le joueur humain a gagné la partie avec un score de " + score[0] + " points!");
+        else if (score[0] > score[1]) System.out.println("L'ordinateur a gagné la partie avec un score de " + score[1] + " points!");
+        else System.out.println("La partie est nulle!");
+
+        //score[0] = score de l'ordinateur
+        //score[1] = score du joueur humain
     }
-} // fin de la classe Mastermind
+}
