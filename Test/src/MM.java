@@ -10,6 +10,7 @@ public class MM {
     //.........................................................................
 
     //______________________________________________
+
     /**
      * @param nb  nombre d'éléments du tableau
      * @param val valeur à affecter à chaque élément
@@ -23,6 +24,7 @@ public class MM {
     }
 
     //______________________________________________
+
     /**
      * @param tab tableau d'entiers
      * @return copie de tab
@@ -35,6 +37,7 @@ public class MM {
     }
 
     //______________________________________________
+
     /**
      * @param t tableau d'entiers
      * @return la liste des éléments de t entre parenthèses et séparés par des virgules
@@ -50,6 +53,7 @@ public class MM {
     }
 
     //______________________________________________
+
     /**
      * @param t tableau de caractères
      * @param c charactère à compter
@@ -63,6 +67,7 @@ public class MM {
     }
 
     //______________________________________________
+
     /**
      * @param t tableau de caractères
      * @param c : caractère
@@ -74,6 +79,7 @@ public class MM {
     }
 
     //______________________________________________
+
     /**
      * @param t tableau de caractères
      * @return vrai ssi les éléments de t sont différents
@@ -95,6 +101,7 @@ public class MM {
      */
 
     //______________________________________________
+
     /**
      * @param t1 tableau d'entiers
      * @param t2 tableau d'entiers
@@ -107,6 +114,7 @@ public class MM {
     }
 
     //____________________________________________________________
+
     /**
      * @param lgCode     : longueur du code
      * @param nbCouleurs : nombre de couleurs
@@ -120,6 +128,7 @@ public class MM {
     }
 
     //____________________________________________________________
+
     /**
      * @param codMot      code à deviner
      * @param lgCode      longueur du code
@@ -142,6 +151,7 @@ public class MM {
     }
 
     //____________________________________________________________
+
     /**
      * @param codMot      code à deviner
      * @param tabCouleurs tableau de caractères contenant les couleurs
@@ -156,6 +166,7 @@ public class MM {
     }
 
     //____________________________________________________________
+
     /**
      * @param lgCode      longueur du code
      * @param tabCouleurs tableau de caractères contenant les couleurs
@@ -164,7 +175,7 @@ public class MM {
      * @Pré-requis: lgCode > 0, nbCouleurs > 0, tabCouleurs.length > 0
      */
     public static int[] propositionCodeHumain(int nbCoups, int lgCode, char[] tabCouleurs) {
-        String codMot = "";// code saisi par l'utilisateur
+        String codMot = "";
         do {
             System.out.println("Proposition N°" + (nbCoups + 1) + " : ");
             codMot = scanner.nextLine();
@@ -173,6 +184,7 @@ public class MM {
     }
 
     //____________________________________________________________
+
     /**
      * @param cod1 code à deviner
      * @param cod2 code proposé
@@ -186,6 +198,7 @@ public class MM {
     }
 
     //____________________________________________________________
+
     /**
      * @param cod        code à deviner
      * @param nbCouleurs nombre de couleurs
@@ -199,6 +212,7 @@ public class MM {
     }
 
     //____________________________________________________________
+
     /**
      * @param cod1       code à deviner
      * @param cod2       code proposé
@@ -219,6 +233,7 @@ public class MM {
     //.........................................................................
 
     //____________________________________________________________
+
     /**
      * @param cod1       code à deviner
      * @param cod2       code proposé
@@ -235,6 +250,7 @@ public class MM {
     }
 
     //____________________________________________________________
+
     /**
      * @param numManche   numéro de la manche
      * @param nbEssaisMax nombre maximum d'essais
@@ -245,17 +261,26 @@ public class MM {
      */
     public static int mancheHumain(int lgCode, char[] tabCouleurs, int numManche, int nbEssaisMax) {
         int nbCoups = 0;
+        int nbEssais = 0;
         int[] cod1 = codeAleat(lgCode, tabCouleurs.length);
         int[] cod2 = propositionCodeHumain(nbCoups, lgCode, tabCouleurs);
-        while (nbCoups < (nbEssaisMax - 1) && !sontEgaux(cod1, cod2)) {
+        do {
             int[] t = nbBienMalPlaces(cod1, cod2, tabCouleurs.length);
             System.out.println("Bien placés : " + t[0] + " Mal placés : " + t[1]);
             nbCoups++;
             cod2 = propositionCodeHumain(nbCoups, lgCode, tabCouleurs);
         }
-        if (nbCoups == nbEssaisMax - 1) System.out.println("Perdu ! Le code était : " + entiersVersMot(cod1, tabCouleurs));
-        else System.out.println("Gagné en " + (nbCoups + 1) + " coups !");
-        return nbCoups + 1;
+        while (nbCoups < (nbEssaisMax - 1) && !sontEgaux(cod1, cod2));
+        if (nbCoups == nbEssaisMax - 1) {
+            System.out.println("Le joueur humain a perdu, le code était : " + entiersVersMot(cod1, tabCouleurs));
+            int[] t = nbBienMalPlaces(cod1, cod2, tabCouleurs.length);
+            nbEssais = nbEssaisMax + t[1] + 2 * (lgCode - (t[0] + t[1]));
+        } else {
+            nbEssais = nbCoups + 1;
+            System.out.println("Le joueur humain a gagné cette mache en " + nbEssais + " essais");
+        }
+        System.out.println("L'ordinateur a gagné " + nbEssais + " points dans cette manche!");
+        return nbEssais;
     }
 
     //...................................................................
@@ -263,6 +288,7 @@ public class MM {
     //...................................................................
 
     //____________________________________________________________
+
     /**
      * @param cod         code à transformer
      * @param tabCouleurs tableau de caractères contenant les couleurs
@@ -276,6 +302,7 @@ public class MM {
     }
 
     //___________________________________________________________________
+
     /**
      * @param rep    tableau de 2 entiers
      * @param lgCode longueur du code
@@ -291,6 +318,7 @@ public class MM {
     }
 
     //___________________________________________________________________
+
     /**
      * @param lgCode longueur du code
      * @return le tableau de 2 entiers contenant le nombre de codes bien et mal placés
@@ -300,14 +328,15 @@ public class MM {
         int[] rep = new int[2];
         do {
             System.out.print("Nombre de codes bien placés : ");
-            rep[0] = scanner.nextInt(); // nombre de codes bien placés
+            rep[0] = scanner.nextInt();
             System.out.print("Nombre de codes mal placés : ");
-            rep[1] = scanner.nextInt(); // nombre de codes mal placés
+            rep[1] = scanner.nextInt();
         } while (!repCorrecte(rep, lgCode));
         return rep;
     }
 
     //___________________________________________________________________
+
     /**
      * CHANGE : action si le code suivant n'existe pas
      * pré-requis : les éléments de cod1 sont des entiers de 0 à nbCouleurs-1
@@ -316,22 +345,18 @@ public class MM {
      * sinon met dans cod1 le code ne contenant que des "0" et retourne faux
      */
     public static boolean passeCodeSuivantLexico(int[] cod1, int nbCouleurs) {
-        int n = cod1.length;
-        int i = n - 1;
-        while (i >= 0 && cod1[i] == nbCouleurs - 1) {
-            cod1[i] = 0;
-            i--;
+        for (int i = cod1.length - 1; i >= 0; i--) {
+            if (cod1[i] != nbCouleurs - 1) {
+                cod1[i]++;
+                return true;
+            }
+            Arrays.fill(cod1, i, i+1, 0);
         }
-        if (i >= 0) {
-            cod1[i]++;
-            return true;
-        } else {
-            for (int j = 0; j < n; j++) cod1[j] = 0;
-            return false;
-        }
+        return false;
     }
 
     //___________________________________________________________________
+
     /**
      * CHANGE : ajout du paramètre cod1 et modification des spécifications
      * pré-requis : cod est une matrice à cod1.length colonnes, rep est une matrice à 2 colonnes, 0 <= nbCoups < cod.length,
@@ -351,6 +376,7 @@ public class MM {
     }
 
     //___________________________________________________________________
+
     /**
      * CHANGE : renommage de passePropSuivante en passeCodeSuivantLexicoCompat,
      * ajout du paramètre cod1 et modification des spécifications
@@ -368,10 +394,10 @@ public class MM {
             if (bool) bool = estCompat(cod1, cod, rep, nbCoups, nbCouleurs);
         }
         return bool;
-
     }
 
     //___________________________________________________________________
+
     /**
      * @param lgCode      longueur du code
      * @param tabCouleurs tableau de couleurs
@@ -394,7 +420,7 @@ public class MM {
         int[] reponse = new int[2];
         int nbEssais = 0;
         boolean bool = true;
-        while (nbCoups < nbEssaisMax && bool) {
+        do {
             System.out.println("Essai n°" + (nbCoups + 1) + " de la manche n°" + numManche);
             System.out.println(entiersVersMot(cod1, tabCouleurs));
             reponse = reponseHumain(lgCode);
@@ -406,15 +432,11 @@ public class MM {
                 bool = passeCodeSuivantLexicoCompat(cod1, cod, rep, nbCoups, nbCouleurs);
             }
         }
-        if (nbCoups == nbEssaisMax && bool) nbEssais = nbEssaisMax + 1;
+        while (nbCoups < nbEssaisMax && bool);
+        if (nbCoups == nbEssaisMax && bool) nbEssais = nbEssaisMax + reponse[1] + 2 * (lgCode - (reponse[0] + reponse[1]));
         else nbEssais = nbCoups + 1;
+        System.out.println("Le joueur humain a gagné " + nbEssais + " points dans cette manche!");
         return nbEssais;
-    }
-
-    //___________________________________________________________________
-    private static void afficheCode(int[] cod, char[] tabCouleurs) {
-        for (int j : cod) System.out.print(tabCouleurs[j]);
-        System.out.println();
     }
 
     //.........................................................................
@@ -422,6 +444,7 @@ public class MM {
     //.........................................................................
 
     //___________________________________________________________________
+
     /**
      * @return l'entier strictement positif saisi
      * @Action: demande au joueur humain de saisir un entier strictement positif, avec re-saisie éventuelle jusqu'à ce qu'elle soit correcte
@@ -436,6 +459,7 @@ public class MM {
     }
 
     //___________________________________________________________________
+
     /**
      * @return l'entier pair strictement positif saisi
      * @Action: demande au joueur humain de saisir un entier pair strictement positif, avec re-saisie éventuelle jusqu'à ce qu'elle soit correcte
@@ -450,6 +474,7 @@ public class MM {
     }
 
     //___________________________________________________________________
+
     /**
      * @return le tableau des initiales des noms de couleurs saisis
      * @Action: demande au joueur humain de saisir le nombre de couleurs (strictement positif),
@@ -480,6 +505,7 @@ public class MM {
     //.........................................................................
 
     //___________________________________________________________________
+
     /**
      * @Action: demande à l'utilisateur de saisir les paramètres de la partie (lgCode, tabCouleurs, nbManches, nbEssaisMax),
      * effectue la partie et affiche le résultat (identité du gagnant ou match nul).
@@ -503,11 +529,16 @@ public class MM {
         System.out.println("                                        Réalisé par : Daniil HIRCHYTS & Youssera OULMEKKI");
         System.out.println("                                 IUT Montpellier-Sète, Département Informatique 2022-2023");
         System.out.println("═════════════════════════════════════════════════════════════════════════════════════════");
+
         System.out.println("Pour commencer, veuillez saisir les paramètres de la partie");
-        System.out.print("Longueur du code secret : "); int lgCode = saisirEntierPositif();
-        System.out.print("\n" + "Couleurs : "); char[] tabCouleurs = saisirCouleurs();
-        System.out.print("\n" + "Nombre de manches : "); int nbManches = saisirEntierPairPositif();
-        System.out.print("\n" + "Nombre d'essais maximum par manche : "); int nbEssaisMax = saisirEntierPositif();
+        System.out.print("Longueur du code secret : ");
+        int lgCode = saisirEntierPositif();
+        System.out.print("\n" + "Couleurs : ");
+        char[] tabCouleurs = saisirCouleurs();
+        System.out.print("\n" + "Nombre de manches : ");
+        int nbManches = saisirEntierPairPositif();
+        System.out.print("\n" + "Nombre d'essais maximum par manche : ");
+        int nbEssaisMax = saisirEntierPositif();
         System.out.println("\n" + "═════════════════════════════════════════════════════════════════════════════════════════");
 
         System.out.println("Les paramètres de la partie sont :");
@@ -522,14 +553,12 @@ public class MM {
         for (int i = 0; i < nbManches; i++) {
             System.out.println("═════════════════════════════════════════════════════════════════════════════════════════");
             System.out.println("Manche " + (i + 1) + " :");
-            if (i % 2 == 0) score[0] += mancheOrdinateur(lgCode, tabCouleurs, i + 1, nbEssaisMax);
-            else score[1] += mancheHumain(lgCode, tabCouleurs, i + 1, nbEssaisMax);
+            if (i % 2 == 1) score[1] += mancheOrdinateur(lgCode, tabCouleurs, i + 1, nbEssaisMax); //score[1] = score du joueur humain
+            else score[0] += mancheHumain(lgCode, tabCouleurs, i + 1, nbEssaisMax); //score[0] = score de l'ordinateur
         }
-        if (score[0] < score[1]) System.out.println("Le joueur humain a gagné la partie avec un score de " + score[0] + " points!");
-        else if (score[0] > score[1]) System.out.println("L'ordinateur a gagné la partie avec un score de " + score[1] + " points!");
-        else System.out.println("La partie est nulle!");
 
-        //score[0] = score de l'ordinateur
-        //score[1] = score du joueur humain
+        if (score[0] < score[1]) System.out.println("Le joueur humain a gagné la partie avec un score de " + score[1] + " points!");
+        else if (score[0] > score[1]) System.out.println("L'ordinateur a gagné la partie avec un score de " + score[0] + " points!");
+        else System.out.println("La partie est nulle!");
     }
 }
