@@ -1,18 +1,32 @@
-import java.util.Arrays;
-
 public class MancheHumain {
-    public static int mancheHumain(int lgCode, char[] tabCouleurs, int numManche, int nbEssaisMax) {
-        int nbCoups = 0;
-        int[] cod1 = Code.codeAleat(lgCode, tabCouleurs.length);
-        int[] cod2 = Code.propositionCodeHumain(nbCoups, lgCode, tabCouleurs);
-        while (nbCoups < (nbEssaisMax - 1) && !Arrays.equals(cod1, cod2)) {
-            int[] t = Code.nbBienMalPlaces(cod1, cod2, tabCouleurs.length);
-            System.out.println("Bien placés : " + t[0] + " Mal placés : " + t[1]);
-            nbCoups++;
-            cod2 = Code.propositionCodeHumain(nbCoups, lgCode, tabCouleurs);
+    private Plateau p;
+    private int score;
+
+    public MancheHumain(Plateau p) {
+        this.p = p;
+        this.score = 0;
+    }
+
+    public void joue() {
+        int nbEssais = 0;
+        Code codeAChercher = new Code(Code.codeAleat(Code.getLgCode(), Couleur.getNbCouleurs()));
+        for (int i = 0; i < Plateau.getNbEssaisMax(); i++) {
+            int[] codePropose = UtMM.propositionCodeHumain(p.getNbCoups(), Code.getLgCode(), Couleur.getTabCouleurs());
+            int[] reponse = UtMM.nbBienMalPlaces(codeAChercher.getCode(), codePropose, Code.getLgCode());
+            p.addCode(new Code(codePropose));
+            p.addReponse(reponse);
+            System.out.println("Bien placés : " + reponse[0] + " Mal placés : " + reponse[1]);
+            if (reponse[0] == Code.getLgCode()) {
+                System.out.println("Bravo, vous avez gagné en " + (p.getNbCoups() + 1) + " coups !");
+                int[] t = UtMM.nbBienMalPlaces(codeAChercher.getCode(), codePropose, Couleur.getTabCouleurs().length);
+                nbEssais = Plateau.getNbEssaisMax() + t[1] + 2 * (Code.getLgCode() - (t[0] + t[1]));
+                score = nbEssais;
+                return;
+            }
         }
-        if (nbCoups == nbEssaisMax - 1) System.out.println("Perdu ! Le code était : " + UtMM.entiersVersMot(cod1, tabCouleurs));
-        else System.out.println("Gagné en " + (nbCoups + 1) + " coups !");
-        return nbCoups + 1;
+    }
+
+    public int getScore() {
+        return score;
     }
 }

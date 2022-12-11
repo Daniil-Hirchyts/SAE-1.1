@@ -1,24 +1,30 @@
 public class Couleur {
+    public static char[] tabCouleurs;
 
-    public static char[] saisirCouleurs() {
-        int n;
-        do {
-            System.out.print("Saisir le nombre de couleurs strictement positif entre 4 et 6 : ");
-            n = UtMM.lireInt();
-        } while (n <= 0);
-        char[] tabCouleurs = new char[n];
-        for (int i = 0; i < n; i++) {
-            System.out.print("Saisir le nom de la couleur n°" + (i + 1) + " : ");
-            tabCouleurs[i] = UtMM.lireString().charAt(0);
-            for (int j = 0; j < i; j++) {
-                if (tabCouleurs[i] == tabCouleurs[j]) {
-                    System.out.println("Erreur : l'initiale du nom de la couleur n°" + (i + 1) + " est déjà utilisée");
-                    i--;
-                    break;
-                }
-            }
-        }
+    public static void initTabCouleurs(char[] tabCouleurs) {
+        Couleur.tabCouleurs = tabCouleurs;
+    }
+
+    public static int getNbCouleurs() {
+        return tabCouleurs.length;
+    }
+
+    public static char entierVersCouleur(int i) {
+        return tabCouleurs[i];
+    }
+
+    public static char[] getTabCouleurs() {
         return tabCouleurs;
     }
 
+    public static void setTabCouleurs(char[] tabCouleurs) {
+        Couleur.tabCouleurs = tabCouleurs;
+    }
+
+    public static int[] motVersEntiers(String codMot, char[] tabCouleurs) {
+        int[] t = new int[codMot.length()];
+        for (int i = 0; i < codMot.length(); i++)
+            for (int j = 0; j < tabCouleurs.length; j++) if (codMot.charAt(i) == tabCouleurs[j]) t[i] = j;
+        return t;
+    }
 }

@@ -7,14 +7,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="3_4" />
+        <module name="graphique" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="3.4-JavaFX" target="19" />
       <module name="3.4_Interface_graphique" target="17" />
-      <module name="3_4" target="19" />
       <module name="_3_4" target="19" />
+      <module name="graphique" target="19" />
     </bytecodeTargetLevel>
   </component>
 </project>

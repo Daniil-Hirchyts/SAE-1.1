@@ -1,55 +1,43 @@
 import java.util.Scanner;
 
 public class UtMM {
-    //______________________________________________
 
-    /**
-     * @return scanne un entier
-     */
-    public static int lireInt() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextInt();
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static boolean codeCorrect(String codMot, int lgCode, char[] tabCouleurs) {
+        if (codMot.length() != lgCode) {
+            System.out.println("La longueur du code doit être : " + lgCode);
+            return false;
+        }
+        for (int i = 0; i < codMot.length(); i++) {
+            if (!estPresent(tabCouleurs, codMot.charAt(i))) {
+                System.out.println("Le code ne doit contenir que des éléments : " + listElem(tabCouleurs));
+                return false;
+            }
+        }
+        return true;
     }
 
-    public static String lireString() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
+
+    public static int[] propositionCodeHumain(int nbCoups, int lgCode, char[] tabCouleurs) {
+        String codMot = "";
+        do {
+            System.out.println("Proposition N°" + (nbCoups + 1) + " : ");
+            codMot = scanner.nextLine();
+        } while (!codeCorrect(codMot, lgCode, tabCouleurs));
+        return Couleur.motVersEntiers(codMot, tabCouleurs);
     }
 
-    //______________________________________________
-
-    /**
-     * @param nb  nombre d'éléments du tableau
-     * @param val valeur à affecter à chaque élément
-     * @return tableau de nb cases contenant la valeur val
-     * @Pré-requis: nb >= 0
-     */
-    public static int[] initTab(int nb, int val) {
-        int[] tab = new int[nb];
-        for (int i = 0; i < nb; i++) tab[i] = val;
-        return tab;
+    public static boolean estPresent(char[] t, char c) {
+        return plusGrandIndice(t, c) != -1;
     }
 
-    //______________________________________________
-
-    /**
-     * @param tab tableau d'entiers
-     * @return copie de tab
-     * @Pré-requis: tab != null
-     */
-    public static int[] copieTab(int[] tab) {
-        int[] c = new int[tab.length];
-        for (int i = 0; i < tab.length; i++) c[i] = tab[i];
-        return c;
+    public static int plusGrandIndice(char[] t, char c) {
+        int i = t.length - 1;
+        while (i >= 0 && t[i] != c) i--;
+        return i;
     }
 
-    //______________________________________________
-
-    /**
-     * @param t tableau d'entiers
-     * @return la liste des éléments de t entre parenthèses et séparés par des virgules
-     * @Pré-requis: t != null
-     */
     public static String listElem(char[] t) {
         String l = "(";
         for (int i = 0; i < t.length; i++) {
@@ -59,39 +47,88 @@ public class UtMM {
         return l + ")";
     }
 
-    //______________________________________________
-
-    /**
-     * @param t tableau de caractères
-     * @param c charactère à compter
-     * @return le plus grand indice d'une case de t contenant c s'il existe, -1 sinon
-     * @Pré-requis: t != null
-     */
-    public static int plusGrandIndice(char[] t, char c) {
-        int i = t.length - 1;
-        while (i >= 0 && t[i] != c) i--;
-        return i;
+    public static int[] nbBienMalPlaces(int[] cod1, int[] cod2, int nbCouleurs) {
+        int[] t = new int[2];
+        t[0] = nbBienPlaces(cod1, cod2);
+        t[1] = nbCommuns(cod1, cod2, nbCouleurs) - t[0];
+        return t;
     }
 
-    //______________________________________________
-
-    /**
-     * @param t tableau de caractères
-     * @param c : caractère
-     * @return vrai ssi c est un élément de t
-     * @Pré-requis: t != null
-     */
-    public static boolean estPresent(char[] t, char c) {
-        return plusGrandIndice(t, c) != -1;
+    public static int nbCommuns(int[] cod1, int[] cod2, int nbCouleurs) {
+        int[] t1 = tabFrequence(cod1, nbCouleurs);
+        int[] t2 = tabFrequence(cod2, nbCouleurs);
+        int nb = 0;
+        for (int i = 0; i < nbCouleurs; i++) nb += Math.min(t1[i], t2[i]);
+        return nb;
     }
 
-    //______________________________________________
+    public static int[] tabFrequence(int[] cod, int nbCouleurs) {
+        int[] t = new int[nbCouleurs];
+        for (int j : cod) t[j]++;
+        return t;
+    }
 
-    /**
-     * @param t tableau de caractères
-     * @return vrai ssi les éléments de t sont différents
-     * @Pré-requis: t != null
-     */
+    public static int nbBienPlaces(int[] cod1, int[] cod2) {
+        int nb = 0;
+        for (int i = 0; i < cod1.length; i++) if (cod1[i] == cod2[i]) nb++;
+        return nb;
+    }
+
+    public static String codeVersMot(int[] code, char[] tabCouleurs) {
+        String codMot = "";
+        for (int i : code) codMot += tabCouleurs[i];
+        return codMot;
+    }
+
+    public static int saisirEntier() {
+        return scanner.nextInt();
+    }
+
+    public static boolean repCorrecte(int[] rep, int lgCode) {
+        if (rep[0] < 0 || rep[1] < 0 || rep[0] + rep[1] > lgCode) {
+            System.out.println("Réponse incorrecte : " + rep[0] + " bien placé(s) et " + rep[1] + " mal placé(s)");
+            return false;
+        }
+        return true;
+    }
+
+    public static int saisirEntierPositif() {
+        int n;
+        do {
+            System.out.print("Saisir un entier strictement positif : ");
+            n = scanner.nextInt();
+        } while (n <= 0);
+        return n;
+    }
+
+    public static int saisirEntierPairPositif() {
+        int n;
+        do {
+            System.out.print("Saisir un entier pair strictement positif : ");
+            n = scanner.nextInt();
+        } while (n <= 0 || n % 2 != 0);
+        return n;
+    }
+
+    public static char[] saisirCouleurs() {
+        boolean egaux = true;
+        int n;
+        do {
+            System.out.print("Saisir le nombre de couleurs strictement positif entre 4 et 6 : ");
+            n = scanner.nextInt();
+        } while (n <= 0);
+        char[] tabCouleurs = new char[n];
+        do {
+            for (int i = 0; i < n; i++) {
+                System.out.print("Saisir le nom de la couleur n°" + (i + 1) + " : ");
+                tabCouleurs[i] = scanner.next().charAt(0);
+            }
+            if (elemDiff(tabCouleurs)) egaux = false;
+            else System.out.println("Les premières lettres des noms de couleurs doivent être différentes");
+        } while (egaux);
+        return tabCouleurs;
+    }
+
     public static boolean elemDiff(char[] t) {
         for (int i = 0; i < t.length; i++) {
             if (estPresent(t, t[i]) && plusGrandIndice(t, t[i]) != i) {
@@ -102,49 +139,15 @@ public class UtMM {
         return true;
     }
 
-    // Dans toutes les fonctions suivantes, on a comme pré-requis implicites sur les paramètres lgCode, nbCouleurs et tabCouleurs :
-    // lgCode > 0, nbCouleurs > 0, tabCouleurs.length > 0 et les éléments de tabCouleurs sont différents
-    // fonctions sur les codes pour la manche Humain
-
-    //______________________________________________
-
-    /**
-     * @param t1 tableau d'entiers
-     * @param t2 tableau d'entiers
-     * @return vrai ssi t1 et t2 contiennent la même suite d'entiers
-     * @Pré-requis: t1.length == t2.length
-     */
-    public static boolean sontEgaux(int[] t1, int[] t2) {
-        for (int i = 0; i < t1.length; i++) if (t1[i] != t2[i]) return false;
-        return true;
-    }
-
-    public static int saisirEntierPositif() {
-        int n;
-        do {
-            System.out.print("Saisir un entier strictement positif : ");
-            n = UtMM.lireInt();
-        } while (n <= 0);
-        return n;
-    }
-
-    private static void afficheCode(int[] cod, char[] tabCouleurs) {
-        for (int j : cod) System.out.print(tabCouleurs[j]);
-        System.out.println();
+    public static int[] copieTab(int[] tab) {
+        int[] c = new int[tab.length];
+        System.arraycopy(tab, 0, c, 0, tab.length);
+        return c;
     }
 
     public static String entiersVersMot(int[] cod, char[] tabCouleurs) {
         String s = "";
         for (int i : cod) s += tabCouleurs[i];
         return s;
-    }
-
-    public static int saisirEntierPairPositif() {
-        int n;
-        do {
-            System.out.print("Saisir un entier pair strictement positif : ");
-            n = UtMM.lireInt();
-        } while (n <= 0 || n % 2 != 0);
-        return n;
     }
 }
