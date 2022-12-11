@@ -100,7 +100,6 @@ public class Scene3Controller {
         checkResult.setVisible(false);
         mancheSuivant.setVisible(false);
 
-//        application.UtMM.alertInfo("Choisissez le code secret pour l'ordinateur");
     }
 
     private void addNewGamingRow() {
@@ -139,7 +138,6 @@ public class Scene3Controller {
         scoreRowCounter = 0;
         gameGrid.getChildren().clear();
 
-//        addNewGamingRow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Scene2.fxml"));
         root = loader.load();
         Scene2Controller scene2Controller = loader.getController();

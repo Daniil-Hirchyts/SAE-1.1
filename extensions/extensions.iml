@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/CFC" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/afficheErreurs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/affichePlateau" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/graphique" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/objet" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/petit-malin" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/statsMasterMindIA" isTestSource="false" />
